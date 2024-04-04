@@ -1,6 +1,6 @@
 package com.TgBotMOEVM.config;
 
-import com.TgBotMOEVM.tgbot.CounterTelegramBot;
+import com.TgBotMOEVM.tgbot.TelegramBot;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -15,7 +15,7 @@ import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 @Component
 @RequiredArgsConstructor
 public class Initializer {
-    private final CounterTelegramBot bot;
+    private final TelegramBot bot;
 
     @EventListener({ContextRefreshedEvent.class})
     public void init() {
