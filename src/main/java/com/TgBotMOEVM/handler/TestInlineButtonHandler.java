@@ -19,7 +19,6 @@ import java.util.List;
 public class TestInlineButtonHandler implements Handler {
 
     private static final String START_TEXT = "TestInlineButtonHandler";
-    private static final String USER_DATA_PATTERN = "%s%s";
 
     private final ReplyKeyboardMaker replyKeyboardMaker;
 
@@ -28,11 +27,11 @@ public class TestInlineButtonHandler implements Handler {
     public List<BotApiMethod<?>> handle(Update update) {
 
         return List.of(createMessage(update.getMessage().getChatId().toString(),
-                "test!",replyKeyboardMaker.getMainMenuKeyboard()));
+                START_TEXT,replyKeyboardMaker.getMainMenuKeyboard()));
     }
 
 
-    private InlineKeyboardMarkup getStudentsButtons() {
+    /*private InlineKeyboardMarkup getStudentsButtons() {
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
 
         List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
@@ -57,7 +56,7 @@ public class TestInlineButtonHandler implements Handler {
         inlineKeyboardMarkup.setKeyboard(keyboard);
         return inlineKeyboardMarkup;
     }
-
+*/
     @Override
     public BotCommand getCommandObject() {
         return ButtonCommand.TEST;

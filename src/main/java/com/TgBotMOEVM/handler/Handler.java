@@ -39,6 +39,7 @@ public interface Handler {
                 .replyMarkup(replyKeyboardMarkup)
                 .build();
     }
+
     /**
      * Creates SendMessage object
      * @param chatId Telegram chat id to put message to
