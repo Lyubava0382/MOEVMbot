@@ -2,10 +2,7 @@ package com.TgBotMOEVM.model;
 
 
 import com.TgBotMOEVM.model.dictionary.UserRole;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,7 +12,8 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity(name = "users")
+@Table(name = "Person")
+@Entity
 public class User extends BaseEntity {
 
     @Column(name = "role", nullable = false)
@@ -34,7 +32,7 @@ public class User extends BaseEntity {
     @Column(name = "lastname", nullable = false)
     private String lastName;
 
-    @Column(name = "SNILS")
+    @Column(name = "snils")
     private String SNILS;
 
 }

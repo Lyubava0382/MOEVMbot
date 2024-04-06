@@ -1,31 +1,34 @@
 package com.TgBotMOEVM.handler;
 
-import com.TgBotMOEVM.constant.Command;
+import com.TgBotMOEVM.component.ReplyKeyboardMaker;
+import com.TgBotMOEVM.constant.ButtonCommand;
+import com.TgBotMOEVM.model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.commands.BotCommand;
 
-import org.springframework.stereotype.Component;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.api.objects.Update;
-
-import java.util.ArrayList;
 import java.util.List;
 
 @Component
 @RequiredArgsConstructor
 public class HelloHandler implements Handler {
 
+
+    private final ReplyKeyboardMaker replyKeyboardMaker;
+
     @Override
     public List<SendMessage> handle(Update update) {
 
 
-            return List.of(createMessage(update, "hello!"));
-        }
+        return List.of(createMessage(update.getMessage().getChatId().toString(),
+                "hello!",replyKeyboardMaker.getMainMenuKeyboard()));
+    }
+
 
     @Override
-    public String getCommand() {
-        return Command.HELLO;
+    public BotCommand getCommand() {
+        return ButtonCommand.HELLO;
     }
 }
