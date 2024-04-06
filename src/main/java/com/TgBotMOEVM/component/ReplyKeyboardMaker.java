@@ -15,17 +15,38 @@ public class ReplyKeyboardMaker {
 
     public ReplyKeyboardMarkup getMainMenuKeyboard() {
         KeyboardRow row = new KeyboardRow();
-        row.add(new KeyboardButton(ButtonCommand.HELLO.getDescription()));
-        row.add(new KeyboardButton(ButtonCommand.TO_MAIN_MENU.getDescription()));
-        row.add(new KeyboardButton(ButtonCommand.TEST.getDescription()));
+        List<KeyboardRow> keyboard = new ArrayList<>();
+        keyboard.add(new KeyboardRow(Collections.singletonList(new KeyboardButton(ButtonCommand.HELLO.getDescription()))));
+        keyboard.add(new KeyboardRow(Collections.singletonList(new KeyboardButton(ButtonCommand.TO_MAIN_MENU.getDescription()))));
+        keyboard.add(new KeyboardRow(Collections.singletonList(new KeyboardButton(ButtonCommand.TEST.getDescription()))));
+        keyboard.add(row);
+
+        return getReplyKeyboardMarkup(keyboard);
+
+
+    }
+
+    /*
+    public ReplyKeyboardMarkup getSubscriptionKeyboard() {
+        KeyboardRow row1 = new KeyboardRow();
+        KeyboardRow row2 = new KeyboardRow();
+
+        row1.add(new KeyboardButton(ButtonCommand.SUBSCRIPTION_INFO.getDescription()));
+        row1.add(new KeyboardButton(ButtonCommand.CANCEL_SUBSCRIPTION.getDescription()));
+        row1.add(new KeyboardButton(ButtonCommand.CREATE_SUBSCRIPTION.getDescription()));
+
+        row2.add(new KeyboardButton(ButtonCommand.CARRY_LESSON.getDescription()));
+        row2.add(new KeyboardButton(ButtonCommand.CANCEL_LESSON.getDescription()));
+        row2.add(new KeyboardButton(ButtonCommand.TO_MAIN_MENU.getDescription()));
 
         List<KeyboardRow> keyboard = new ArrayList<>();
-        keyboard.add(row);
+        keyboard.add(row1);
+        keyboard.add(row2);
 
         return getReplyKeyboardMarkup(keyboard);
     }
 
-    /*
+
     public ReplyKeyboardMarkup getStudyKeyboard() {
         KeyboardRow row = new KeyboardRow();
         row.add(new KeyboardButton(ButtonCommand.FEEDBACK_ON_LESSON.getDescription()));

@@ -6,14 +6,7 @@ import com.TgBotMOEVM.model.User;
 import com.TgBotMOEVM.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.api.objects.Update;
-
-import java.util.List;
-
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.commands.BotCommand;
 
@@ -32,15 +25,15 @@ public class StartHandler implements Handler {
 
 
     @Override
-    public List<SendMessage> handle(Update update) {
+    public List<BotApiMethod<?>> handle(Update update) {
         User user = service.create(update);
-
         return List.of(createMessage(update.getMessage().getChatId().toString(),
                 String.format(GREETING, user.getName(), user.getRole()), replyKeyboardMaker.getMainMenuKeyboard()));
+
     }
 
     @Override
-    public BotCommand getCommand() {
+    public BotCommand getCommandObject() {
         return ButtonCommand.START;
     }
 }
