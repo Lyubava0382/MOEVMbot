@@ -1,9 +1,6 @@
 package com.TgBotMOEVM.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -22,9 +19,11 @@ import java.util.UUID;
 @NoArgsConstructor
 public abstract class BaseEntity {
     @Id
+    @Column(name = "id")
+    //@GeneratedValue(strategy = GenerationType.IDENTITY)
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID")
-    private UUID id;
+    private int id;
 
     @Column(name = "created_when", nullable = false, updatable = false)
     @CreationTimestamp

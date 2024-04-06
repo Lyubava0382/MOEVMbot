@@ -1,15 +1,14 @@
 package com.TgBotMOEVM.handler;
 
-        import com.TgBotMOEVM.constant.Command;
+        import com.TgBotMOEVM.component.ReplyKeyboardMaker;
+        import com.TgBotMOEVM.constant.ButtonCommand;
         import lombok.RequiredArgsConstructor;
         import org.springframework.stereotype.Component;
         import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
         import org.telegram.telegrambots.meta.api.objects.Update;
+        import org.telegram.telegrambots.meta.api.objects.commands.BotCommand;
         import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
-        import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
         import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
-        import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
-        import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 
         import java.util.ArrayList;
         import java.util.List;
@@ -21,15 +20,15 @@ public class TestInlineButtonHandler implements Handler {
     private static final String START_TEXT = "TestInlineButtonHandler";
     private static final String USER_DATA_PATTERN = "%s%s";
 
+    private final ReplyKeyboardMaker replyKeyboardMaker;
+
 
     @Override
     public List<SendMessage> handle(Update update) {
-        SendMessage sendMessage;
 
-            sendMessage = createMessage(update, START_TEXT);
-            sendMessage.setReplyMarkup(getStudentsButtons());
 
-        return List.of(sendMessage);
+        return List.of(createMessage(update.getMessage().getChatId().toString(),
+                "test!",replyKeyboardMaker.getMainMenuKeyboard()));
     }
 
     private InlineKeyboardMarkup getStudentsButtons() {
@@ -59,7 +58,7 @@ public class TestInlineButtonHandler implements Handler {
     }
 
     @Override
-    public String getCommand() {
-        return Command.TEST;
+    public BotCommand getCommand() {
+        return ButtonCommand.TEST;
     }
 }
