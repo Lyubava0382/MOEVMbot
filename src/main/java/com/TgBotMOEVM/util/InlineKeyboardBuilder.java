@@ -1,4 +1,4 @@
-package com.TgBotMOEVM.util.builder;
+package com.TgBotMOEVM.util;
 
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;

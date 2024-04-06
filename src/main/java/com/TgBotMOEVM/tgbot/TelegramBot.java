@@ -5,22 +5,14 @@ import com.TgBotMOEVM.annotation.InlineButtonType;
 import com.TgBotMOEVM.config.BotConfig;
 import com.TgBotMOEVM.encoder.InlineButtonDTOEncoder;
 import com.TgBotMOEVM.handler.Handler;
-import com.TgBotMOEVM.handler.InteractiveHandler;
 import com.TgBotMOEVM.resolver.Resolver;
 import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-import jakarta.validation.constraints.NotNull;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
-import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
-import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.util.List;
 import java.util.Map;
@@ -65,18 +57,8 @@ public class TelegramBot extends TelegramLongPollingBot {
 
             if (handler != null) {
 
-                if (handler instanceof InteractiveHandler interactiveHandler) {
-                    // If it needs user input
-
-                    // This sends the initial message and initialise the handler for new user
-                    executeBotApiMethods(interactiveHandler.handle(update));
-
-
-                } else {
-                    // If chosen handler doesn't need user input
-
                     executeBotApiMethods(handler.handle(update));
-                }
+
 
             }
 

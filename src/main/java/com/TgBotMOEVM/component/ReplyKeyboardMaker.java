@@ -1,6 +1,7 @@
 package com.TgBotMOEVM.component;
 
 import com.TgBotMOEVM.constant.ButtonCommand;
+import com.TgBotMOEVM.constant.InlineButtonCommand;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
@@ -16,7 +17,7 @@ public class ReplyKeyboardMaker {
     public ReplyKeyboardMarkup getMainMenuKeyboard() {
         KeyboardRow row = new KeyboardRow();
         List<KeyboardRow> keyboard = new ArrayList<>();
-        keyboard.add(new KeyboardRow(Collections.singletonList(new KeyboardButton(ButtonCommand.HELLO.getDescription()))));
+        keyboard.add(new KeyboardRow(Collections.singletonList(new KeyboardButton(InlineButtonCommand.HELLO.getDescription()))));
         keyboard.add(new KeyboardRow(Collections.singletonList(new KeyboardButton(ButtonCommand.TO_MAIN_MENU.getDescription()))));
         keyboard.add(new KeyboardRow(Collections.singletonList(new KeyboardButton(ButtonCommand.TEST.getDescription()))));
         keyboard.add(row);

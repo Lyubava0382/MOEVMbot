@@ -17,11 +17,11 @@ public class InlineButtonDTOEncoder {
      *
      //* @throws ButtonCallbackDataLimitExceedException If packed data exceeds size limit
      */
-    public String encode(InlineButtonDTO buttonData) throws Exception{//ButtonCallbackDataLimitExceedException {
+    public String encode(InlineButtonDTO buttonData) {//ButtonCallbackDataLimitExceedException {
         String dataString = buttonData.getCommand() + DELIMITER + buttonData.getData();
 
         if (doesDataStringExceedSizeLimit(dataString)) {
-            throw new Exception();//ButtonCallbackDataLimitExceedException(getDataStringByteSize(dataString));
+            //throw new Exception();//ButtonCallbackDataLimitExceedException(getDataStringByteSize(dataString));
         }
 
         return dataString;
