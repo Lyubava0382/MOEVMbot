@@ -16,20 +16,20 @@ import lombok.Setter;
 @Entity
 public class User extends BaseEntity {
 
-    @Column(name = "role", nullable = false)
+    @Column(name = "role")//, nullable = false)
     @Enumerated(EnumType.STRING)
     private UserRole role = UserRole.GUEST;
 
-    @Column(name = "telegram_id", nullable = false, unique = true)
+    @Column(name = "telegram_id")//, nullable = false, unique = true)
     private String telegramId;
 
-    @Column(name = "email", unique = true)
+    @Column(name = "email")//, unique = true)
     private String email;
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "name")//, nullable = false)
     private String name;
 
-    @Column(name = "lastname", nullable = false)
+    @Column(name = "lastname")//, nullable = false)
     private String lastName;
 
     @Column(name = "snils")

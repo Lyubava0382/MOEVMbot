@@ -1,17 +1,18 @@
 package com.TgBotMOEVM.handler;
 
-        import com.TgBotMOEVM.component.ReplyKeyboardMaker;
-        import com.TgBotMOEVM.constant.ButtonCommand;
-        import lombok.RequiredArgsConstructor;
-        import org.springframework.stereotype.Component;
-        import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-        import org.telegram.telegrambots.meta.api.objects.Update;
-        import org.telegram.telegrambots.meta.api.objects.commands.BotCommand;
-        import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
-        import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
+import com.TgBotMOEVM.component.ReplyKeyboardMaker;
+import com.TgBotMOEVM.constant.ButtonCommand;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
+import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.commands.BotCommand;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
-        import java.util.ArrayList;
-        import java.util.List;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -24,12 +25,12 @@ public class TestInlineButtonHandler implements Handler {
 
 
     @Override
-    public List<SendMessage> handle(Update update) {
-
+    public List<BotApiMethod<?>> handle(Update update) {
 
         return List.of(createMessage(update.getMessage().getChatId().toString(),
                 "test!",replyKeyboardMaker.getMainMenuKeyboard()));
     }
+
 
     private InlineKeyboardMarkup getStudentsButtons() {
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
@@ -58,7 +59,7 @@ public class TestInlineButtonHandler implements Handler {
     }
 
     @Override
-    public BotCommand getCommand() {
+    public BotCommand getCommandObject() {
         return ButtonCommand.TEST;
     }
 }
