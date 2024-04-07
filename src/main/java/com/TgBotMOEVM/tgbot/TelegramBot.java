@@ -10,9 +10,10 @@ import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 
 import java.util.List;
 import java.util.Map;
@@ -57,12 +58,13 @@ public class TelegramBot extends TelegramLongPollingBot {
 
             if (handler != null) {
 
-                    executeBotApiMethods(handler.handle(update));
+                executeBotApiMethods(handler.handle(update));
 
 
             }
 
         } else if (update.hasCallbackQuery()) {
+
 
             InlineButtonDTO buttonData = InlineButtonDTOEncoder.decode(update.getCallbackQuery().getData());
 
@@ -73,7 +75,30 @@ public class TelegramBot extends TelegramLongPollingBot {
             }
 
         }
+        if (update.hasMessage() && update.getMessage().hasText()) {
+            String messageText = update.getMessage().getText();
+            if (messageText.startsWith("/snils")) {
+                String[] parts = messageText.split(" ");
+                if (parts.length == 2) {
+                    String snilsNumber = parts[1]; // Сохранение номера СНИЛС
+                    sendTextMessage(update.getMessage().getChatId().toString(), "Номер СНИЛС успешно сохранён: " + snilsNumber);
+                } else {
+                    // Сообщение пользователю об ошибке, если команда введена некорректно
+                    sendTextMessage(update.getMessage().getChatId().toString(), "Пожалуйста, используйте формат: /snils [номер]");
+                }
+            }}
     }
+    private void sendTextMessage(String chatId, String text) {
+        SendMessage message = new SendMessage();
+        message.setChatId(chatId);
+        message.setText(text);
+        try {
+            execute(message); // Отправка сообщения
+        } catch (TelegramApiException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     /**
      * Sends all the messages from the list
