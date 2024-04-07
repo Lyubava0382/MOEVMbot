@@ -15,5 +15,5 @@ public class InlineButtonDTO {
 
     String command;
 
-    String data;
+
 }
