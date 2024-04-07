@@ -1,18 +1,12 @@
 package com.TgBotMOEVM.handler;
 
-import com.TgBotMOEVM.DTO.InlineButtonDTO;
 import com.TgBotMOEVM.component.InlineKeyboardMaker;
 import com.TgBotMOEVM.component.ReplyKeyboardMaker;
-import com.TgBotMOEVM.constant.ButtonCommand;
 import com.TgBotMOEVM.constant.InlineButtonCommand;
-import com.TgBotMOEVM.encoder.InlineButtonDTOEncoder;
-import com.TgBotMOEVM.model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import org.telegram.telegrambots.meta.api.methods.AnswerCallbackQuery;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageReplyMarkup;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.commands.BotCommand;
 
@@ -27,6 +21,7 @@ public class HelloHandler implements Handler {
             Для авторизации введите страховой номер индивидуального лицевого счёта (СНИЛС):
             """;
     private final InlineKeyboardMaker inlineKeyboardMaker;
+    private final ReplyKeyboardMaker replyKeyboardMaker;
 
     @Override
     public List<BotApiMethod<?>> handle(Update update) {
@@ -35,7 +30,7 @@ public class HelloHandler implements Handler {
         return List.of(SendMessage.builder()
                 .chatId(update.getMessage().getChatId().toString())
                 .text(START_TEXT)//String.format(GREETING, user.getName(), user.getRole()))
-                .replyMarkup(inlineKeyboardMaker.getLessonMainMenuInlineKeyboard())
+                .replyMarkup(inlineKeyboardMaker.getSNILS())
                 .build());
     }
 

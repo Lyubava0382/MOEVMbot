@@ -14,7 +14,6 @@ public class TelegramInlineButtonsUtils {
                 .callbackData(InlineButtonDTOEncoder.encode(
                         InlineButtonDTO.builder()
                                 .command(commandName)
-                                .data(data)
                                 .build()
                 ))
                 .text(text)
@@ -26,7 +25,6 @@ public class TelegramInlineButtonsUtils {
                 .callbackData(InlineButtonDTOEncoder.encode(
                         InlineButtonDTO.builder()
                                 .command(commandObject.getCommand())
-                                .data(data)
                                 .build()
                 ))
                 .text(commandObject.getDescription())
@@ -39,7 +37,6 @@ public class TelegramInlineButtonsUtils {
                 .callbackData(InlineButtonDTOEncoder.encode(
                         InlineButtonDTO.builder()
                                 .command(commandObject.getCommand())
-                                .data(data)
                                 .build()
                 ))
                 .text(descriptionOverride)

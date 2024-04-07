@@ -18,7 +18,7 @@ public class InlineButtonDTOEncoder {
      //* @throws ButtonCallbackDataLimitExceedException If packed data exceeds size limit
      */
     public String encode(InlineButtonDTO buttonData) {//ButtonCallbackDataLimitExceedException {
-        String dataString = buttonData.getCommand() + DELIMITER + buttonData.getData();
+        String dataString = buttonData.getCommand();
 
         if (doesDataStringExceedSizeLimit(dataString)) {
             //throw new Exception();//ButtonCallbackDataLimitExceedException(getDataStringByteSize(dataString));
@@ -39,16 +39,11 @@ public class InlineButtonDTOEncoder {
             throw new  InlineButtonCallbackDataParseException("Data string is bigger then expected! This isn't InlineButton data.");
         }
 
-        String[] dataSplit = data.split(DELIMITER);
 
         InlineButtonDTO instance;
 
         // Checking if data string contain the expected number of parameters
-        if (dataSplit.length != InlineButtonDTO.class.getDeclaredFields().length) {
-            throw new InlineButtonCallbackDataParseException("Cannot parse data from input string. Wrong parameters number.");
-        } else {
-            instance = new InlineButtonDTO();
-        }
+        instance = new InlineButtonDTO(data);
 
         return instance;
     }
