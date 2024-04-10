@@ -6,8 +6,10 @@ import com.TgBotMOEVM.config.BotConfig;
 import com.TgBotMOEVM.encoder.InlineButtonDTOEncoder;
 import com.TgBotMOEVM.handler.Handler;
 import com.TgBotMOEVM.resolver.Resolver;
+import com.TgBotMOEVM.service.impl.AuthenticationService;
 import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
@@ -28,6 +30,8 @@ public class TelegramBot extends TelegramLongPollingBot {
     private final Map<String, Handler> inlineButtonHandlers;
 
     private final Resolver resolver;
+    @Autowired
+    AuthenticationService authenticationService;
 
     public TelegramBot(BotConfig config, Resolver resolver, @InlineButtonType List<Handler> inlineButtonHandlers) {
         this.config = config;
@@ -78,15 +82,9 @@ public class TelegramBot extends TelegramLongPollingBot {
         if (update.hasMessage() && update.getMessage().hasText()) {
             String messageText = update.getMessage().getText();
             if (messageText.startsWith("/snils")) {
-                String[] parts = messageText.split(" ");
-                if (parts.length == 2) {
-                    String snilsNumber = parts[1]; // Сохранение номера СНИЛС
-                    sendTextMessage(update.getMessage().getChatId().toString(), "Номер СНИЛС успешно сохранён: " + snilsNumber);
-                } else {
-                    // Сообщение пользователю об ошибке, если команда введена некорректно
-                    sendTextMessage(update.getMessage().getChatId().toString(), "Пожалуйста, используйте формат: /snils [номер]");
-                }
-            }}
+                sendTextMessage(update.getMessage().getChatId().toString(),
+                        authenticationService.getStudent(messageText, update.getMessage().getFrom().getId().toString()));
+            } }
     }
     private void sendTextMessage(String chatId, String text) {
         SendMessage message = new SendMessage();

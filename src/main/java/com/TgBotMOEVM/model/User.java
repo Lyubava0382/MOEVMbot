@@ -23,14 +23,14 @@ public class User extends BaseEntity {
     @Column(name = "telegram_id")//, nullable = false, unique = true)
     private String telegramId;
 
-    @Column(name = "email")//, unique = true)
-    private String email;
-
     @Column(name = "name")//, nullable = false)
     private String name;
 
     @Column(name = "lastname")//, nullable = false)
     private String lastName;
+
+    @Column(name = "middle_name")//, nullable = false)
+    private String middle_name;
 
     @Column(name = "snils")
     private String SNILS;
