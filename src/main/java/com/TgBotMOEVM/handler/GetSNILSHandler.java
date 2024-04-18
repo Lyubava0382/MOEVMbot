@@ -1,22 +1,9 @@
 package com.TgBotMOEVM.handler;
 
-import com.TgBotMOEVM.DTO.InlineButtonDTO;
 import com.TgBotMOEVM.annotation.InlineButtonType;
-import com.TgBotMOEVM.constant.InlineButtonCommand;
-import com.TgBotMOEVM.encoder.InlineButtonDTOEncoder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
-import org.telegram.telegrambots.meta.api.methods.AnswerCallbackQuery;
-import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
-import org.telegram.telegrambots.meta.api.methods.ParseMode;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.api.objects.commands.BotCommand;
-
-import java.util.List;
-import java.util.UUID;
 
 @Slf4j
 @Component

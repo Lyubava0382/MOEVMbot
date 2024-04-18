@@ -1,35 +1,32 @@
 package com.TgBotMOEVM.security;
 
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
-import org.springframework.security.oauth2.client.web.DefaultOAuth2AuthorizationRequestResolver;
-import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
-import org.springframework.util.Assert;
-
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.SecureRandom;
-import java.util.Base64;
-
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestResolver;
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
-import java.util.Base64;
-import java.util.HashMap;
-import java.util.Map;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.util.Base64;
+import java.util.HashMap;
+import java.util.Map;
 
 public class CustomAuthorizationRequestResolver implements OAuth2AuthorizationRequestResolver {
     private final ClientRegistrationRepository clientRegistrationRepository;
     private final String registrationId;
     private static final SecureRandom secureRandom = new SecureRandom();
 
+    private String codeVerifier;
+    private String codeChallenge;
+
     public CustomAuthorizationRequestResolver(ClientRegistrationRepository clientRegistrationRepository, String registrationId) {
         this.clientRegistrationRepository = clientRegistrationRepository;
         this.registrationId = registrationId;
+
+        generateCodeVerifier(); // Генерируем codeVerifier
+        generateCodeChallenge(); // Генерируем codeChallenge
     }
 
     @Override
@@ -39,8 +36,9 @@ public class CustomAuthorizationRequestResolver implements OAuth2AuthorizationRe
             return null;
         }
 
-        String codeVerifier = generateCodeVerifier();
-        String codeChallenge = generateCodeChallenge(codeVerifier);
+        generateCodeVerifier(); // Генерируем codeVerifier
+        generateCodeChallenge(); // Генерируем codeChallenge
+
         Map<String, Object> additionalParameters = new HashMap<>();
         additionalParameters.put("code_challenge", codeChallenge);
         additionalParameters.put("code_challenge_method", "S256");
@@ -63,8 +61,9 @@ public class CustomAuthorizationRequestResolver implements OAuth2AuthorizationRe
             return null;
         }
 
-        String codeVerifier = generateCodeVerifier();
-        String codeChallenge = generateCodeChallenge(codeVerifier);
+        generateCodeVerifier(); // Генерируем codeVerifier
+        generateCodeChallenge(); // Генерируем codeChallenge
+
         Map<String, Object> additionalParameters = new HashMap<>();
         additionalParameters.put("code_challenge", codeChallenge);
         additionalParameters.put("code_challenge_method", "S256");
@@ -79,17 +78,17 @@ public class CustomAuthorizationRequestResolver implements OAuth2AuthorizationRe
                 .build();
     }
 
-    private String generateCodeVerifier() {
+    private void generateCodeVerifier() {
         byte[] code = new byte[32];
         secureRandom.nextBytes(code);
-        return Base64.getUrlEncoder().withoutPadding().encodeToString(code);
+        codeVerifier = Base64.getUrlEncoder().withoutPadding().encodeToString(code);
     }
 
-    private String generateCodeChallenge(String codeVerifier) {
+    private void generateCodeChallenge() {
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-256");
             byte[] bytes = md.digest(codeVerifier.getBytes());
-            return Base64.getUrlEncoder().withoutPadding().encodeToString(bytes);
+            codeChallenge = Base64.getUrlEncoder().withoutPadding().encodeToString(bytes);
         } catch (NoSuchAlgorithmException e) {
             throw new IllegalStateException("SHA-256 algorithm not found", e);
         }
@@ -97,5 +96,13 @@ public class CustomAuthorizationRequestResolver implements OAuth2AuthorizationRe
 
     private String generateState() {
         return Base64.getUrlEncoder().encodeToString(new byte[32]);
+    }
+
+    public String getCodeVerifier() {
+        return codeVerifier;
+    }
+
+    public String getCodeChallenge() {
+        return codeChallenge;
     }
 }

@@ -8,9 +8,10 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
-import org.springframework.security.oauth2.client.web.DefaultOAuth2AuthorizationRequestResolver;
+import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestResolver;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 @Configuration
 @EnableWebSecurity
@@ -19,22 +20,24 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+                .csrf(c -> c
+                        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+                )
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/", "/error", "/webjars/**","/start",
-                                "/toMainMenu","/test").permitAll()
+                        .requestMatchers("/ltgbot/login/oauth2/code/etu", "/success", "/error").permitAll()
                         .anyRequest().authenticated()
                 )
-                .oauth2Login(oauth2 -> oauth2
-                        .authorizationEndpoint(authorization -> authorization
-                                .authorizationRequestResolver(
-                                        new CustomAuthorizationRequestResolver(
-                                                clientRegistrationRepository(), "etu"
-                                        )
-                                )
-                        )
+                .oauth2Login(oauth2Login -> oauth2Login
+                        .authorizationEndpoint(authorizationEndpointConfig -> {
+                            OAuth2AuthorizationRequestResolver resolver =
+                                    customAuthorizationRequestResolver(clientRegistrationRepository());
+                            authorizationEndpointConfig.authorizationRequestResolver(resolver);
+                        })
+                        .defaultSuccessUrl("/success", true)
                 );
         return http.build();
     }
+
 
     @Bean
     public ClientRegistrationRepository clientRegistrationRepository() {
@@ -43,8 +46,8 @@ public class SecurityConfig {
 
     private ClientRegistration clientRegistration() {
         return ClientRegistration.withRegistrationId("etu")
-                .clientId("*")
-                .clientSecret("**") // Не используется, но требуется для комплектности
+                .clientId("9bc6c414-2f20-4167-8fbb-513a3fb81acb")
+                .clientSecret("hGXWuTL1yNZT1SaJs5QTZRENj9PP25xpDcb0bp90")
                 .scope("profile")
                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
                 .redirectUri("http://localhost:8080/ltgbot/login/oauth2/code/etu")
@@ -53,5 +56,10 @@ public class SecurityConfig {
                 .userInfoUri("https://id.etu.ru/api/userinfo")
                 .userNameAttributeName("id")
                 .build();
+    }
+    @Bean
+    public CustomAuthorizationRequestResolver customAuthorizationRequestResolver(ClientRegistrationRepository clientRegistrationRepository) {
+        CustomAuthorizationRequestResolver resolver =  new CustomAuthorizationRequestResolver(clientRegistrationRepository, "etu");
+        return resolver;
     }
 }

@@ -5,6 +5,9 @@ import com.TgBotMOEVM.constant.ButtonCommand;
 import com.TgBotMOEVM.model.User;
 import com.TgBotMOEVM.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -26,9 +29,20 @@ public class StartHandler implements Handler {
 
     @Override
     public List<BotApiMethod<?>> handle(Update update) {
-        User user = service.create(update);
-        return List.of(createMessage(update.getMessage().getChatId().toString(),
-                String.format(GREETING, user.getName(), user.getRole()), replyKeyboardMaker.getMainMenuKeyboard()));
+        System.out.println("ЕСТЬ");
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null
+                && authentication.isAuthenticated() &&
+                !(authentication instanceof AnonymousAuthenticationToken)) {
+            User user = service.create(update);
+            return List.of(createMessage(update.getMessage().getChatId().toString(),
+                    String.format(GREETING, user.getName(), user.getRole()), replyKeyboardMaker.getMainMenuKeyboard()));
+
+        }
+else
+            return List.of(createMessage(update.getMessage().getChatId().toString(),
+                    "НЕТ", replyKeyboardMaker.getMainMenuKeyboard()));
+
 
     }
 

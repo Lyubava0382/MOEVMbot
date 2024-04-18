@@ -13,4 +13,7 @@ public interface ButtonCommand {
     BotCommand TEST = new BotCommand("/test", "Тест");
     //BotCommand SNILS = new BotCommand("/snils", "Нажмите и введите номер после /snils");
 
+    BotCommand SUCCESS = new BotCommand("/success", "Success");
+
+
 }
