@@ -3,6 +3,7 @@ package com.TgBotMOEVM.config;
 import com.TgBotMOEVM.security.CustomAuthorizationRequestResolver;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
@@ -11,20 +12,20 @@ import org.springframework.security.oauth2.client.registration.InMemoryClientReg
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestResolver;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(c -> c
-                        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-                )
+
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/ltgbot/login/oauth2/code/etu", "/success", "/error").permitAll()
+                        .requestMatchers("/ltgbot/login/oauth2/code/etu",
+                        "https://id.etu.ru/oauth/token",
+                        "/ltgbot/login/oauth2/code/etu/*","/success", "/error").permitAll()
                         .anyRequest().authenticated()
                 )
                 .oauth2Login(oauth2Login -> oauth2Login
@@ -33,7 +34,7 @@ public class SecurityConfig {
                                     customAuthorizationRequestResolver(clientRegistrationRepository());
                             authorizationEndpointConfig.authorizationRequestResolver(resolver);
                         })
-                        .defaultSuccessUrl("/success", true)
+                        //.defaultSuccessUrl("/success", true)
                 );
         return http.build();
     }

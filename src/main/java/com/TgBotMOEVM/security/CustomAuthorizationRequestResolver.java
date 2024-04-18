@@ -20,6 +20,7 @@ public class CustomAuthorizationRequestResolver implements OAuth2AuthorizationRe
 
     private String codeVerifier;
     private String codeChallenge;
+    private String state;
 
     public CustomAuthorizationRequestResolver(ClientRegistrationRepository clientRegistrationRepository, String registrationId) {
         this.clientRegistrationRepository = clientRegistrationRepository;
@@ -95,9 +96,12 @@ public class CustomAuthorizationRequestResolver implements OAuth2AuthorizationRe
     }
 
     private String generateState() {
-        return Base64.getUrlEncoder().encodeToString(new byte[32]);
+        state = Base64.getUrlEncoder().encodeToString(new byte[32]);
+        return state;
     }
-
+    public String getState() {
+        return state;
+    }
     public String getCodeVerifier() {
         return codeVerifier;
     }
