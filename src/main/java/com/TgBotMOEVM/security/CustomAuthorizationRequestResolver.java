@@ -25,35 +25,41 @@ public class CustomAuthorizationRequestResolver implements OAuth2AuthorizationRe
     public CustomAuthorizationRequestResolver(ClientRegistrationRepository clientRegistrationRepository, String registrationId) {
         this.clientRegistrationRepository = clientRegistrationRepository;
         this.registrationId = registrationId;
-
         generateCodeVerifier(); // Генерируем codeVerifier
-        generateCodeChallenge(); // Генерируем codeChallenge
+        generateCodeChallenge();
+        generateState();
+
     }
 
     @Override
     public OAuth2AuthorizationRequest resolve(HttpServletRequest request) {
+
         ClientRegistration clientRegistration = clientRegistrationRepository.findByRegistrationId(registrationId);
         if (clientRegistration == null) {
             return null;
         }
+        // Генерируем codeChallenge
 
-        generateCodeVerifier(); // Генерируем codeVerifier
-        generateCodeChallenge(); // Генерируем codeChallenge
+        String authorizationUrl = clientRegistration.getProviderDetails().getAuthorizationUri() +
+                "?response_type=code" +
+                "&client_id=" + clientRegistration.getClientId() +
+                "&redirect_uri=" + clientRegistration.getRedirectUri() +
+                "&state=" + state +
+                "&code_challenge=" + getCodeChallenge() +
+                "&code_challenge_method=S256";
 
-        Map<String, Object> additionalParameters = new HashMap<>();
-        additionalParameters.put("code_challenge", codeChallenge);
-        additionalParameters.put("code_challenge_method", "S256");
-        additionalParameters.put("code_verifier", codeVerifier);  // Note: This should not be sent to the authorization server
-
-        return OAuth2AuthorizationRequest.authorizationCode()
+        // Создаем объект OAuth2AuthorizationRequest с указанными параметрами
+        OAuth2AuthorizationRequest.Builder builder = OAuth2AuthorizationRequest.authorizationCode()
+                .authorizationUri(authorizationUrl)
                 .clientId(clientRegistration.getClientId())
-                .authorizationUri(clientRegistration.getProviderDetails().getAuthorizationUri())
                 .redirectUri(clientRegistration.getRedirectUri())
                 .scopes(clientRegistration.getScopes())
-                .state(generateState())
-                .additionalParameters(additionalParameters)
-                .build();
+                .state(state);
+
+
+        return builder.build();
     }
+
 
     @Override
     public OAuth2AuthorizationRequest resolve(HttpServletRequest request, String clientRegistrationId) {
@@ -62,21 +68,24 @@ public class CustomAuthorizationRequestResolver implements OAuth2AuthorizationRe
             return null;
         }
 
-        generateCodeVerifier(); // Генерируем codeVerifier
-        generateCodeChallenge(); // Генерируем codeChallenge
+        String authorizationUrl = clientRegistration.getProviderDetails().getAuthorizationUri() +
+                "?response_type=code" +
+                "&client_id=" + clientRegistration.getClientId() +
+                "&redirect_uri=" + clientRegistration.getRedirectUri() +
+                "&state=" + state +
+                "&code_challenge=" + getCodeChallenge() +
+                "&code_challenge_method=S256";
 
-        Map<String, Object> additionalParameters = new HashMap<>();
-        additionalParameters.put("code_challenge", codeChallenge);
-        additionalParameters.put("code_challenge_method", "S256");
-
-        return OAuth2AuthorizationRequest.authorizationCode()
+        // Создаем объект OAuth2AuthorizationRequest с указанными параметрами
+        OAuth2AuthorizationRequest.Builder builder = OAuth2AuthorizationRequest.authorizationCode()
+                .authorizationUri(authorizationUrl)
                 .clientId(clientRegistration.getClientId())
-                .authorizationUri(clientRegistration.getProviderDetails().getAuthorizationUri())
                 .redirectUri(clientRegistration.getRedirectUri())
                 .scopes(clientRegistration.getScopes())
-                .state(generateState())
-                .additionalParameters(additionalParameters)
-                .build();
+                .state(state);
+
+
+        return builder.build();
     }
 
     private void generateCodeVerifier() {

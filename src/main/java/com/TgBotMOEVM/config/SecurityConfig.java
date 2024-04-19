@@ -12,6 +12,7 @@ import org.springframework.security.oauth2.client.registration.InMemoryClientReg
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestResolver;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 @Configuration
 @EnableWebSecurity
@@ -21,20 +22,20 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-
+                .csrf(c -> c
+                        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+                )
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/ltgbot/login/oauth2/code/etu",
-                        "https://id.etu.ru/oauth/token",
-                        "/ltgbot/login/oauth2/code/etu/*","/success", "/error").permitAll()
+                                "/ltgbot/login/oauth2/code/etu/*","/success", "/error").permitAll()
                         .anyRequest().authenticated()
                 )
                 .oauth2Login(oauth2Login -> oauth2Login
                         .authorizationEndpoint(authorizationEndpointConfig -> {
                             OAuth2AuthorizationRequestResolver resolver =
-                                    customAuthorizationRequestResolver(clientRegistrationRepository());
+                                    new CustomAuthorizationRequestResolver(clientRegistrationRepository(), "etu");
                             authorizationEndpointConfig.authorizationRequestResolver(resolver);
                         })
-                        //.defaultSuccessUrl("/success", true)
                 );
         return http.build();
     }
@@ -58,9 +59,5 @@ public class SecurityConfig {
                 .userNameAttributeName("id")
                 .build();
     }
-    @Bean
-    public CustomAuthorizationRequestResolver customAuthorizationRequestResolver(ClientRegistrationRepository clientRegistrationRepository) {
-        CustomAuthorizationRequestResolver resolver =  new CustomAuthorizationRequestResolver(clientRegistrationRepository, "etu");
-        return resolver;
-    }
+
 }

@@ -29,32 +29,13 @@ public class AuthHandler implements Handler {
 
     @Autowired
     private UserStateService userStateService;
-    @Autowired
-    private CustomAuthorizationRequestResolver customAuthorizationRequestResolver;
-
-    public AuthHandler(CustomAuthorizationRequestResolver resolver) {
-        this.customAuthorizationRequestResolver = resolver;
-    }
     @Override
     public List<BotApiMethod<?>> handle(Update update) {
         if (update.hasCallbackQuery()) {
             Long telegramUserId = update.getCallbackQuery().getMessage().getChatId();
-            String state = Base64.getEncoder().encodeToString(("telegramUserId=" + telegramUserId).getBytes());
-
-            // Генерируем код вызова (code_verifier)
-
-            String codeVerifier = customAuthorizationRequestResolver.getCodeVerifier();
-
-            // Генерируем код проверки (code_challenge)
-            String codeChallenge = customAuthorizationRequestResolver.getCodeChallenge();
 
             // Формируем авторизационную ссылку с добавленными параметрами
-            String authorizationUrl = "https://id.etu.ru/authorize?response_type=code" +
-                    "&client_id=9bc6c414-2f20-4167-8fbb-513a3fb81acb" +
-                    "&redirect_uri=http://localhost:8080/ltgbot/login/oauth2/code/etu" +
-                    "&state=" + state +
-                    "&code_challenge=" + codeChallenge +
-                    "&code_challenge_method=S256";
+            String authorizationUrl = "https://id.etu.ru/authorize";
 
             // Отправляем ссылку пользователю
             telegramService.sendMessage(update.getCallbackQuery().getMessage().getChatId(), authorizationUrl);
@@ -62,22 +43,9 @@ public class AuthHandler implements Handler {
         } else if (update.hasMessage() && update.getMessage().hasText()) {
             // Обработка обычных текстовых сообщений
             Long telegramUserId = update.getMessage().getFrom().getId();
-            String state = Base64.getEncoder().encodeToString(("telegramUserId=" + telegramUserId).getBytes());
-
+            String authorizationUrl = "https://id.etu.ru/authorize";
             // Генерируем код вызова (code_verifier)
 
-            String codeVerifier = customAuthorizationRequestResolver.getCodeVerifier();
-
-            // Генерируем код проверки (code_challenge)
-            String codeChallenge = customAuthorizationRequestResolver.getCodeChallenge();
-
-            // Формируем авторизационную ссылку с добавленными параметрами
-            String authorizationUrl = "https://id.etu.ru/authorize?response_type=code" +
-                    "&client_id=9bc6c414-2f20-4167-8fbb-513a3fb81acb" +
-                    "&redirect_uri=http://localhost:8080/ltgbot/login/oauth2/code/etu" +
-                    "&state=" + state +
-                    "&code_challenge=" + codeChallenge +
-                    "&code_challenge_method=S256";
 
             // Отправляем ссылку пользователю
             telegramService.sendMessage(update.getMessage().getChatId(), authorizationUrl);
