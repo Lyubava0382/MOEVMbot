@@ -35,7 +35,7 @@ public class AuthHandler implements Handler {
             Long telegramUserId = update.getCallbackQuery().getMessage().getChatId();
 
             // Формируем авторизационную ссылку с добавленными параметрами
-            String authorizationUrl = "https://id.etu.ru/authorize";
+            String authorizationUrl = "http://localhost:8080/oauth2/authorization/etu";
 
             // Отправляем ссылку пользователю
             telegramService.sendMessage(update.getCallbackQuery().getMessage().getChatId(), authorizationUrl);
@@ -43,7 +43,7 @@ public class AuthHandler implements Handler {
         } else if (update.hasMessage() && update.getMessage().hasText()) {
             // Обработка обычных текстовых сообщений
             Long telegramUserId = update.getMessage().getFrom().getId();
-            String authorizationUrl = "https://id.etu.ru/authorize";
+            String authorizationUrl = "http://localhost:8080/oauth2/authorization/etu";
             // Генерируем код вызова (code_verifier)
 
 

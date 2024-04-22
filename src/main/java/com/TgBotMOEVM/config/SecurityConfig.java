@@ -1,8 +1,12 @@
 package com.TgBotMOEVM.config;
 
 import com.TgBotMOEVM.security.CustomAuthorizationRequestResolver;
+import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.core.env.Environment;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -12,34 +16,40 @@ import org.springframework.security.oauth2.client.registration.InMemoryClientReg
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestResolver;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+
+import static org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestRedirectFilter.DEFAULT_AUTHORIZATION_REQUEST_BASE_URI;
 
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
+
+    @Autowired
+    private Environment env;
+
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-                .csrf(c -> c
-                        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+        http.csrf(c -> c.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
+                .authorizeHttpRequests(authz -> authz
+                        .requestMatchers("/", "/*", "/error").permitAll()  // Ensure public access to root, all first-level paths, and error pages.
+                        .requestMatchers("/oauth2/authorization/etu",
+                                "/ltgbot/login/oauth2/code/etu").permitAll()  // Explicitly allow OAuth2 initiation without authentication.
+                        .anyRequest().authenticated()  // Require authentication for all other requests.
                 )
-                .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/ltgbot/login/oauth2/code/etu",
-                                "/ltgbot/login/oauth2/code/etu/*","/success", "/error").permitAll()
-                        .anyRequest().authenticated()
+                .oauth2Login(oauth2 -> oauth2
+                        .authorizationEndpoint()
+                        .authorizationRequestResolver(new CustomAuthorizationRequestResolver(
+                                clientRegistrationRepository(), DEFAULT_AUTHORIZATION_REQUEST_BASE_URI
+                        ))
                 )
-                .oauth2Login(oauth2Login -> oauth2Login
-                        .authorizationEndpoint(authorizationEndpointConfig -> {
-                            OAuth2AuthorizationRequestResolver resolver =
-                                    new CustomAuthorizationRequestResolver(clientRegistrationRepository(), "etu");
-                            authorizationEndpointConfig.authorizationRequestResolver(resolver);
-                        })
+                .exceptionHandling(exceptions -> exceptions
+                        .authenticationEntryPoint(new Http403ForbiddenEntryPoint())  // Handle unauthenticated access to protected endpoints.
                 );
+
         return http.build();
     }
-
 
     @Bean
     public ClientRegistrationRepository clientRegistrationRepository() {
@@ -59,5 +69,4 @@ public class SecurityConfig {
                 .userNameAttributeName("id")
                 .build();
     }
-
 }
