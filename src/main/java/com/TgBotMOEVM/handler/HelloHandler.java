@@ -27,10 +27,15 @@ public class HelloHandler implements Handler {
     public List<BotApiMethod<?>> handle(Update update) {
         //User user = service.getUserOrCreateNewOne(update);
 
-        return List.of(SendMessage.builder()
+        /*return List.of(SendMessage.builder()
                 .chatId(update.getMessage().getChatId().toString())
                 .text(START_TEXT)//String.format(GREETING, user.getName(), user.getRole()))
                 .replyMarkup(inlineKeyboardMaker.getSNILS())
+                .build()); */
+        return List.of(SendMessage.builder()
+                .chatId(update.getMessage().getChatId().toString())
+                .text("Авторизация")
+                .replyMarkup(inlineKeyboardMaker.getUser())
                 .build());
     }
 

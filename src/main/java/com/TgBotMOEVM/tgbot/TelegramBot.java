@@ -3,9 +3,11 @@ package com.TgBotMOEVM.tgbot;
 import com.TgBotMOEVM.DTO.InlineButtonDTO;
 import com.TgBotMOEVM.annotation.InlineButtonType;
 import com.TgBotMOEVM.config.BotConfig;
+import com.TgBotMOEVM.config.Storage;
 import com.TgBotMOEVM.encoder.InlineButtonDTOEncoder;
 import com.TgBotMOEVM.handler.Handler;
 import com.TgBotMOEVM.resolver.Resolver;
+import com.TgBotMOEVM.service.impl.AuthService;
 import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -29,12 +31,14 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     private final Resolver resolver;
 
+
     public TelegramBot(BotConfig config, Resolver resolver, @InlineButtonType List<Handler> inlineButtonHandlers) {
         this.config = config;
         this.resolver = resolver;
         this.inlineButtonHandlers = inlineButtonHandlers
                 .stream()
                 .collect(Collectors.toMap((handler -> handler.getCommandObject().getCommand()), Function.identity()));
+
     }
 
     @Override
@@ -49,6 +53,21 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(@NotNull Update update) {
+        Storage storage = Storage.getInstance();
+        if (storage.isProfileDone()){
+            Long chatId = update.getMessage().getChatId();
+            SendMessage message = new SendMessage();
+            message.setChatId(chatId.toString());
+            message.setText("Приятно познакомиться, " +
+                    storage.getProfileResponse().getData().getFirstName() + " " +
+                    storage.getProfileResponse().getData().getSecondName() +
+                    "!");
+            try {
+                execute(message); // Отправка сообщения
+            } catch (TelegramApiException e) {
+                e.printStackTrace();
+            }
+        }
         if (update.hasMessage() && update.getMessage().hasText()) {
             // If we received a message
 

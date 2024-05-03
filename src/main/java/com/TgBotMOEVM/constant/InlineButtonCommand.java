@@ -7,4 +7,8 @@ public interface InlineButtonCommand {
     //String GET_MORE_LESSON_INFO = "/lessonGetMore";
     BotCommand HELLO = new BotCommand("/hello", "Привет");
     BotCommand SNILS = new BotCommand("/waiting_snils", "Нажмите и введите номер после /snils");
+    BotCommand USER = new BotCommand("/user", "Нажми на ссылку");
+    BotCommand AUTH = new BotCommand("/auth", "Auth");
+
+
 }
