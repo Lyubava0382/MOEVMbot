@@ -2,6 +2,7 @@ package com.TgBotMOEVM.controller;
 
 import com.TgBotMOEVM.config.Storage;
 import com.TgBotMOEVM.model.AuthResponse;
+import com.TgBotMOEVM.model.AuthorisedUser;
 import com.TgBotMOEVM.model.ProfileResponse;
 import com.TgBotMOEVM.service.UserService;
 import com.TgBotMOEVM.service.impl.ProfileService;
@@ -106,6 +107,7 @@ public class AuthController {
         Storage storage = Storage.getInstance();
         storage.setProfileDone(true);
         storage.setProfileResponse(profileResponse);
+
         profileService.create(profileResponse.getData());
 
         return profileResponse;

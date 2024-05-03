@@ -32,7 +32,6 @@ public class AuthHandler implements Handler {
     @Override
     public List<BotApiMethod<?>> handle(Update update) {
         if (update.hasCallbackQuery()) {
-            Long telegramUserId = update.getCallbackQuery().getMessage().getChatId();
 
             String authorizationUrl = """
               Чтобы авторизоваться пройдите по ссылке:
@@ -40,23 +39,22 @@ public class AuthHandler implements Handler {
               
               После согласия на использование персональных данных, 
               для подтверждения отправьте адрес электронной почты, 
-              привязанной к личному кабинету, используя команду \\email.
-              Пример: '\\email examplestudent2024@stud.etu.ru'
+              привязанной к личному кабинету, используя команду Email.
+              Пример: 'Email examplestudent2024@stud.etu.ru'
               """;
 
             telegramService.sendMessage(update.getCallbackQuery().getMessage().getChatId(), authorizationUrl);
             return List.of(createMessage(update.getCallbackQuery().getMessage().getChatId().toString(), authorizationUrl));
         } else if (update.hasMessage() && update.getMessage().hasText()) {
-            Long telegramUserId = update.getMessage().getFrom().getId();
             String authorizationUrl = """
               Чтобы авторизоваться пройдите по ссылке:
               http://localhost:8080/oauth2/authorization/etu
               
-              После согласия на использование персональных данных, 
-              для подтверждения отправьте адрес электронной почты, 
-              привязанной к личному кабинету, используя команду /email.
-              Пример: '/email examplestudent2024@stud.etu.ru'
-              """;;
+              После согласия на использование персональных данных,
+              для подтверждения отправьте адрес электронной почты,
+              привязанной к личному кабинету, используя префикс 'Email'.
+              Пример: 'Email examplestudent2024@stud.etu.ru'
+              """;
             telegramService.sendMessage(update.getMessage().getChatId(), authorizationUrl);
             return List.of(createMessage(update.getMessage().getChatId().toString(), authorizationUrl));
         }

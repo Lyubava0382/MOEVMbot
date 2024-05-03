@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 
 @Service
 @RequiredArgsConstructor
@@ -21,9 +23,22 @@ public class ProfileService {
     private final ProfileRepository profileRepository;
 
     @Transactional
-    public AuthorisedUser create(AuthorisedUser authorisedUser) {
-        authorisedUser.setAuthTime(Instant.now());
-        profileRepository.save(authorisedUser);
+    public AuthorisedUser create(ProfileResponse.Data data) {
+        AuthorisedUser authorisedUser = new AuthorisedUser();
+        try{
+            authorisedUser.setAuthTime(Instant.now());
+            authorisedUser.setEmail(data.getEmail());
+            authorisedUser.setBirthdate(LocalDate.ofInstant(
+                    data.getBirthdate().toInstant(), ZoneId.systemDefault()));
+            authorisedUser.setFirstName(data.getFirstName());
+            authorisedUser.setSecondName(data.getSecondName());
+            authorisedUser.setMiddleName(data.getMiddleName());
+            profileRepository.save(authorisedUser);
+        }
+        catch(Exception e){
+
+        }
+
         return authorisedUser;
     }
 }

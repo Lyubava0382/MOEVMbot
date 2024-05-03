@@ -2,6 +2,7 @@ package com.TgBotMOEVM.handler;
 
 import com.TgBotMOEVM.component.ReplyKeyboardMaker;
 import com.TgBotMOEVM.constant.ButtonCommand;
+import com.TgBotMOEVM.model.User;
 import com.TgBotMOEVM.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -18,7 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class EmailHandler implements Handler {
 
-
+    private final UserService userService;
     @Override
     public List<BotApiMethod<?>> handle(Update update) {
         List<BotApiMethod<?>> responses = new ArrayList<>();
@@ -28,19 +29,25 @@ public class EmailHandler implements Handler {
             String messageText = message.getText();
             Long chatId = message.getChatId();
 
-            // Проверяем, начинается ли сообщение с команды /email
-            if (messageText.startsWith("/email")) {
-                // Извлекаем аргумент после команды /email
-                String emailArg = messageText.substring("/email".length()).trim();
+                String emailArg = messageText.substring("Email".length()).trim();
 
-                // Проверяем, что аргумент не пустой
                 if (!emailArg.isEmpty()) {
-                    // Обрабатываем полученный аргумент
+
+
                     responses.add(createMessage(chatId.toString(), "Обработка email: " + emailArg));
+                    User user = userService.authUser(update, emailArg);
+                    if (user != null){
+                        responses.add(createMessage(chatId.toString(), "Привет, " +
+                                user.getFirst_name() + ' ' + user.getSecond_name()));
+                    }
+                    else {
+                        responses.add(createMessage(chatId.toString(), "Неудача"));
+
+                    }
                 } else {
-                    // Если аргумент отсутствует
-                    responses.add(createMessage(chatId.toString(), "Пожалуйста, введите email после команды /email."));
-                }
+                    responses.add(createMessage(chatId.toString(), "Пожалуйста, введите адрес своей " +
+                            "электронной почты после команды Email."));
+
             }
         }
 

@@ -1,14 +1,18 @@
 package com.TgBotMOEVM.service.impl;
 
+import com.TgBotMOEVM.model.AuthorisedUser;
 import com.TgBotMOEVM.model.User;
 import com.TgBotMOEVM.model.dictionary.UserRole;
+import com.TgBotMOEVM.repository.ProfileRepository;
 import com.TgBotMOEVM.repository.UserRepository;
 import com.TgBotMOEVM.service.UserService;
+import jakarta.persistence.Column;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -19,9 +23,9 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @org.springframework.transaction.annotation.Transactional(readOnly = true)
 public class UserServiceImpl implements UserService {
-
     private final UserRepository repository;
 
+    private final ProfileRepository profileRepository;
     @Transactional
     @Override
     public User create(Update update) {
@@ -39,6 +43,35 @@ public class UserServiceImpl implements UserService {
             repository.save(user);
         }
         return user;
+    }
+
+    @Transactional
+    @Override
+    public User authUser(Update update, String email) {
+        String telegramId = update.getMessage().getFrom().getId().toString();
+
+        User user = repository.findByTelegramId(telegramId);
+        if (user == null) {
+            this.create(update);
+            //Исключение
+        }
+            if (profileRepository.findByEmail(email).isPresent()){
+                AuthorisedUser authorisedUser = profileRepository.findByEmail(email).get();
+                user.setEmail(email);
+
+                user.setSecond_name(authorisedUser.getSecondName());
+
+                user.setFirst_name(authorisedUser.getFirstName());
+
+                user.setMiddle_name(authorisedUser.getMiddleName());
+
+                user.setBirthdate(authorisedUser.getBirthdate());
+                return user;
+            }
+            else {
+                // Исключение статус
+            }
+        return null;
     }
 
     @Override

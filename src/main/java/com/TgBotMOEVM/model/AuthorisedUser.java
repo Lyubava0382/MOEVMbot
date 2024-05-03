@@ -22,10 +22,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Table(name = "Auth_users")
 @Entity
-public class AuthorisedUser {
-
-    @Id
-    private String id;
+public class AuthorisedUser extends BaseEntity  {
 
     @Column(name = "second_name")
     private String secondName;

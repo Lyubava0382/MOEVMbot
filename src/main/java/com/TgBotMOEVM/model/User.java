@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.UUID;
 
@@ -19,9 +20,6 @@ import java.util.UUID;
 @Table(name = "Users")
 @Entity
 public class User extends BaseEntity {
-
-    @Id
-    private int id;
 
     @Column(name = "telegram_id")//, nullable = false, unique = true)
     private String telegramId;
@@ -39,7 +37,7 @@ public class User extends BaseEntity {
     private String middle_name;
 
     @Column(name = "birthdate")//, nullable = false)
-    private Date birthdate;
+    private LocalDate birthdate;
 
     @Column(name = "notification")//, nullable = false)
     private boolean notification;

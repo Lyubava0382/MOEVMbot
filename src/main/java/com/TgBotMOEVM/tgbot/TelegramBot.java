@@ -4,6 +4,7 @@ import com.TgBotMOEVM.DTO.InlineButtonDTO;
 import com.TgBotMOEVM.annotation.InlineButtonType;
 import com.TgBotMOEVM.config.BotConfig;
 import com.TgBotMOEVM.config.Storage;
+import com.TgBotMOEVM.constant.ButtonCommand;
 import com.TgBotMOEVM.encoder.InlineButtonDTOEncoder;
 import com.TgBotMOEVM.handler.Handler;
 import com.TgBotMOEVM.resolver.Resolver;
@@ -53,7 +54,9 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(@NotNull Update update) {
-        Storage storage = Storage.getInstance();
+/*
+        if (update.hasMessage() && update.getMessage().hasText()) {}
+
         if (storage.isProfileDone()){
             Long chatId = update.getMessage().getChatId();
             SendMessage message = new SendMessage();
@@ -67,23 +70,22 @@ public class TelegramBot extends TelegramLongPollingBot {
             } catch (TelegramApiException e) {
                 e.printStackTrace();
             }
-        }
+        }*/
         if (update.hasMessage() && update.getMessage().hasText()) {
+            String command = update.getMessage().getText();
             // If we received a message
 
-            String command = update.getMessage().getText();
+            if (update.getMessage().getText().startsWith("Email")){
+                command = ButtonCommand.EMAIL.getCommand();
+            }
 
             Handler handler = resolver.getHandler(command);
 
             if (handler != null) {
-
                 executeBotApiMethods(handler.handle(update));
-
-
             }
 
         } else if (update.hasCallbackQuery()) {
-
 
             InlineButtonDTO buttonData = InlineButtonDTOEncoder.decode(update.getCallbackQuery().getData());
 
