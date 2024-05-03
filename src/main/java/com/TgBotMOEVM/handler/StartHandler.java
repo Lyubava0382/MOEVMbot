@@ -29,22 +29,12 @@ public class StartHandler implements Handler {
 
     @Override
     public List<BotApiMethod<?>> handle(Update update) {
-        System.out.println("ЕСТЬ");
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null
-                && authentication.isAuthenticated() &&
-                !(authentication instanceof AnonymousAuthenticationToken)) {
+
             User user = service.create(update);
             return List.of(createMessage(update.getMessage().getChatId().toString(),
                     String.format(GREETING, user.getName(), user.getRole()), replyKeyboardMaker.getMainMenuKeyboard()));
 
         }
-else
-            return List.of(createMessage(update.getMessage().getChatId().toString(),
-                    "НЕТ", replyKeyboardMaker.getMainMenuKeyboard()));
-
-
-    }
 
     @Override
     public BotCommand getCommandObject() {

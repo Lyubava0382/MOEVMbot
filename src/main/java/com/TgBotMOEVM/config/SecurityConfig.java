@@ -1,19 +1,15 @@
 package com.TgBotMOEVM.config;
 
 import com.TgBotMOEVM.security.CustomAuthorizationRequestResolver;
-import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.core.env.Environment;
-import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
-import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestResolver;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
@@ -35,14 +31,15 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers("/", "/*", "/error").permitAll()  // Ensure public access to root, all first-level paths, and error pages.
                         .requestMatchers("/oauth2/authorization/etu",
-                                "/ltgbot/login/oauth2/code/etu").permitAll()  // Explicitly allow OAuth2 initiation without authentication.
+                                "/ltgbot/login/oauth2/code/etu",
+                                "https://id.etu.ru/oauth/token",
+                                "/success").permitAll()  // Explicitly allow OAuth2 initiation without authentication.
                         .anyRequest().authenticated()  // Require authentication for all other requests.
                 )
                 .oauth2Login(oauth2 -> oauth2
                         .authorizationEndpoint()
                         .authorizationRequestResolver(new CustomAuthorizationRequestResolver(
-                                clientRegistrationRepository(), DEFAULT_AUTHORIZATION_REQUEST_BASE_URI
-                        ))
+                                clientRegistrationRepository(), DEFAULT_AUTHORIZATION_REQUEST_BASE_URI))
                 )
                 .exceptionHandling(exceptions -> exceptions
                         .authenticationEntryPoint(new Http403ForbiddenEntryPoint())  // Handle unauthenticated access to protected endpoints.

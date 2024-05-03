@@ -19,7 +19,7 @@ public class ReplyKeyboardMaker {
         List<KeyboardRow> keyboard = new ArrayList<>();
         keyboard.add(new KeyboardRow(Collections.singletonList(new KeyboardButton(InlineButtonCommand.HELLO.getDescription()))));
         keyboard.add(new KeyboardRow(Collections.singletonList(new KeyboardButton(ButtonCommand.TO_MAIN_MENU.getDescription()))));
-        keyboard.add(new KeyboardRow(Collections.singletonList(new KeyboardButton(ButtonCommand.TEST.getDescription()))));
+        keyboard.add(new KeyboardRow(Collections.singletonList(new KeyboardButton(ButtonCommand.START.getDescription()))));
         keyboard.add(row);
 
         return getReplyKeyboardMarkup(keyboard);

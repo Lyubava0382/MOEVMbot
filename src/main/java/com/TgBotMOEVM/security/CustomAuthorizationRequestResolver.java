@@ -1,25 +1,25 @@
 package com.TgBotMOEVM.security;
 
+import com.TgBotMOEVM.config.Storage;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.keygen.Base64StringKeyGenerator;
 import org.springframework.security.crypto.keygen.StringKeyGenerator;
 import org.springframework.security.oauth2.client.web.DefaultOAuth2AuthorizationRequestResolver;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestResolver;
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
-import org.springframework.security.oauth2.core.endpoint.PkceParameterNames;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 
 public class CustomAuthorizationRequestResolver implements OAuth2AuthorizationRequestResolver {
 
     private final OAuth2AuthorizationRequestResolver defaultResolver;
+
     private final StringKeyGenerator secureKeyGenerator =
             new Base64StringKeyGenerator(Base64.getUrlEncoder().withoutPadding(), 96);
 
@@ -53,7 +53,9 @@ public class CustomAuthorizationRequestResolver implements OAuth2AuthorizationRe
             // If SHA-256 is not available, fall back to using the verifier as the challenge
             codeChallenge = codeVerifier;
         }
-
+        Storage storage = Storage.getInstance();
+        storage.setState(req.getState());
+        storage.setCodeVerifier(codeVerifier);
         return OAuth2AuthorizationRequest.from(req)
                 .clientId("9bc6c414-2f20-4167-8fbb-513a3fb81acb")
                 .redirectUri("http://localhost:8080/ltgbot/login/oauth2/code/etu")
