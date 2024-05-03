@@ -35,19 +35,11 @@ public class EmailHandler implements Handler {
 
 
                     responses.add(createMessage(chatId.toString(), "Обработка email: " + emailArg));
-                    User user = userService.authUser(update, emailArg);
-                    if (user != null){
-                        responses.add(createMessage(chatId.toString(), "Привет, " +
-                                user.getFirst_name() + ' ' + user.getSecond_name()));
-                    }
-                    else {
-                        responses.add(createMessage(chatId.toString(), "Неудача"));
-
-                    }
+                    String emailMessage = userService.authUser(update, emailArg);
+                    responses.add(createMessage(chatId.toString(), emailMessage));
                 } else {
                     responses.add(createMessage(chatId.toString(), "Пожалуйста, введите адрес своей " +
                             "электронной почты после команды Email."));
-
             }
         }
 

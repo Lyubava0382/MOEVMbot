@@ -11,7 +11,7 @@ import java.util.UUID;
 
 public interface UserService {
     User create(Update update);
-    User authUser(Update update, String email);
+    String authUser(Update update, String email);
 
     List<User> getAllStudents();
 
