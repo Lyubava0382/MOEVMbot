@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -18,6 +19,9 @@ import java.util.Date;
 @Table(name = "Users")
 @Entity
 public class User extends BaseEntity {
+
+    @Id
+    private int id;
 
     @Column(name = "telegram_id")//, nullable = false, unique = true)
     private String telegramId;
@@ -44,8 +48,8 @@ public class User extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private UserRole role = UserRole.GUEST;
 
-    @Column(name = "name")//, nullable = false)
-    private String name;
+    @Column(name = "nickname")//, nullable = false)
+    private String nickname;
 
     @Column(name = "lastname")//, nullable = false)
     private String lastName;

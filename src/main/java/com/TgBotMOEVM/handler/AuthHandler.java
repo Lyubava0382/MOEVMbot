@@ -34,13 +34,29 @@ public class AuthHandler implements Handler {
         if (update.hasCallbackQuery()) {
             Long telegramUserId = update.getCallbackQuery().getMessage().getChatId();
 
-            String authorizationUrl = "http://localhost:8080/oauth2/authorization/etu";
+            String authorizationUrl = """
+              Чтобы авторизоваться пройдите по ссылке:
+              http://localhost:8080/oauth2/authorization/etu
+              
+              После согласия на использование персональных данных, 
+              для подтверждения отправьте адрес электронной почты, 
+              привязанной к личному кабинету, используя команду \\email.
+              Пример: '\\email examplestudent2024@stud.etu.ru'
+              """;
 
             telegramService.sendMessage(update.getCallbackQuery().getMessage().getChatId(), authorizationUrl);
             return List.of(createMessage(update.getCallbackQuery().getMessage().getChatId().toString(), authorizationUrl));
         } else if (update.hasMessage() && update.getMessage().hasText()) {
             Long telegramUserId = update.getMessage().getFrom().getId();
-            String authorizationUrl = "http://localhost:8080/oauth2/authorization/etu";
+            String authorizationUrl = """
+              Чтобы авторизоваться пройдите по ссылке:
+              http://localhost:8080/oauth2/authorization/etu
+              
+              После согласия на использование персональных данных, 
+              для подтверждения отправьте адрес электронной почты, 
+              привязанной к личному кабинету, используя команду /email.
+              Пример: '/email examplestudent2024@stud.etu.ru'
+              """;;
             telegramService.sendMessage(update.getMessage().getChatId(), authorizationUrl);
             return List.of(createMessage(update.getMessage().getChatId().toString(), authorizationUrl));
         }

@@ -31,7 +31,7 @@ public class UserServiceImpl implements UserService {
 
         if (user == null) {
             user = new User();
-            user.setName(update.getMessage().getFrom().getFirstName());
+            user.setNickname(update.getMessage().getFrom().getFirstName());
             user.setLastName(update.getMessage().getFrom().getLastName());
             user.setTelegramId(telegramId);
             user.setRole(UserRole.STUDENT);

@@ -3,9 +3,11 @@ package com.TgBotMOEVM.controller;
 import com.TgBotMOEVM.config.Storage;
 import com.TgBotMOEVM.model.AuthResponse;
 import com.TgBotMOEVM.model.ProfileResponse;
-import com.TgBotMOEVM.service.impl.AuthService;
+import com.TgBotMOEVM.service.UserService;
+import com.TgBotMOEVM.service.impl.ProfileService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -25,15 +27,13 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 @RestController
+@RequiredArgsConstructor
 public class AuthController {
 
     private AuthResponse authResponse;
     private ProfileResponse profileResponse;
     private final ModelMapper modelMapper;
-
-    public AuthController(ModelMapper modelMapper) {
-        this.modelMapper = modelMapper;
-    }
+    private final ProfileService profileService;
 
     //@GetMapping("/ltgbot/login/oauth2/code/etu")
     //public ResponseEntity<String> handleAuthorizationCode(@RequestParam("code") String code, @RequestParam("state") String state) {
@@ -106,6 +106,8 @@ public class AuthController {
         Storage storage = Storage.getInstance();
         storage.setProfileDone(true);
         storage.setProfileResponse(profileResponse);
+        profileService.create(profileResponse.getData());
+
         return profileResponse;
     }
     @GetMapping("/success")
