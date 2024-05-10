@@ -36,6 +36,6 @@ public class HelloHandler implements Handler {
 
     @Override
     public BotCommand getCommandObject() {
-        return InlineButtonCommand.HELLO;
+        return InlineButtonCommand.AUTH;
     }
 }
