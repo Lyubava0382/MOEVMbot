@@ -1,7 +1,6 @@
 package com.TgBotMOEVM.config;
 
 import com.TgBotMOEVM.model.ProfileResponse;
-import org.springframework.context.annotation.Bean;
 
 
 public class Storage {

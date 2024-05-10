@@ -3,12 +3,10 @@ package com.TgBotMOEVM.tgbot;
 import com.TgBotMOEVM.DTO.InlineButtonDTO;
 import com.TgBotMOEVM.annotation.InlineButtonType;
 import com.TgBotMOEVM.config.BotConfig;
-import com.TgBotMOEVM.config.Storage;
 import com.TgBotMOEVM.constant.ButtonCommand;
 import com.TgBotMOEVM.encoder.InlineButtonDTOEncoder;
 import com.TgBotMOEVM.handler.Handler;
 import com.TgBotMOEVM.resolver.Resolver;
-import com.TgBotMOEVM.service.impl.AuthService;
 import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -54,23 +52,7 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(@NotNull Update update) {
-/*
-        if (update.hasMessage() && update.getMessage().hasText()) {}
 
-        if (storage.isProfileDone()){
-            Long chatId = update.getMessage().getChatId();
-            SendMessage message = new SendMessage();
-            message.setChatId(chatId.toString());
-            message.setText("Приятно познакомиться, " +
-                    storage.getProfileResponse().getData().getFirstName() + " " +
-                    storage.getProfileResponse().getData().getSecondName() +
-                    "!");
-            try {
-                execute(message); // Отправка сообщения
-            } catch (TelegramApiException e) {
-                e.printStackTrace();
-            }
-        }*/
         if (update.hasMessage() && update.getMessage().hasText()) {
             String command = update.getMessage().getText();
             // If we received a message
@@ -96,18 +78,7 @@ public class TelegramBot extends TelegramLongPollingBot {
             }
 
         }
-        if (update.hasMessage() && update.getMessage().hasText()) {
-            String messageText = update.getMessage().getText();
-            if (messageText.startsWith("/snils")) {
-                String[] parts = messageText.split(" ");
-                if (parts.length == 2) {
-                    String snilsNumber = parts[1]; // Сохранение номера СНИЛС
-                    sendTextMessage(update.getMessage().getChatId().toString(), "Номер СНИЛС успешно сохранён: " + snilsNumber);
-                } else {
-                    // Сообщение пользователю об ошибке, если команда введена некорректно
-                    sendTextMessage(update.getMessage().getChatId().toString(), "Пожалуйста, используйте формат: /snils [номер]");
-                }
-            }}
+
     }
     private void sendTextMessage(String chatId, String text) {
         SendMessage message = new SendMessage();
@@ -136,12 +107,6 @@ public class TelegramBot extends TelegramLongPollingBot {
             }
         }
     }
-
-    /**
-     * This function gets cache's element to trigger time based eviction checker
-     *
-     * @param id - id of needed item from the cache
-     */
 
 
 }

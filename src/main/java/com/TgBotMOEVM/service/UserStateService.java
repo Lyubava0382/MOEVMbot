@@ -1,4 +1,4 @@
-package com.TgBotMOEVM.service.impl;
+package com.TgBotMOEVM.service;
 
 import com.TgBotMOEVM.util.UserState;
 import org.springframework.stereotype.Component;

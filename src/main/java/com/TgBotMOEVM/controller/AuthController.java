@@ -2,10 +2,8 @@ package com.TgBotMOEVM.controller;
 
 import com.TgBotMOEVM.config.Storage;
 import com.TgBotMOEVM.model.AuthResponse;
-import com.TgBotMOEVM.model.AuthorisedUser;
 import com.TgBotMOEVM.model.ProfileResponse;
-import com.TgBotMOEVM.service.UserService;
-import com.TgBotMOEVM.service.impl.ProfileService;
+import com.TgBotMOEVM.service.impl.ProfileServiceImpl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -14,32 +12,27 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
 import java.net.URLEncoder;
 import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 
 @RestController
 @RequiredArgsConstructor
 public class AuthController {
 
-    private AuthResponse authResponse;
-    private ProfileResponse profileResponse;
     private final ModelMapper modelMapper;
-    private final ProfileService profileService;
-
-    //@GetMapping("/ltgbot/login/oauth2/code/etu")
-    //public ResponseEntity<String> handleAuthorizationCode(@RequestParam("code") String code, @RequestParam("state") String state) {
-
-
+    private final ProfileServiceImpl profileService;
 
     @GetMapping("/ltgbot/login/oauth2/code/etu")
     public void exchangeAuthorizationCodeForToken(
@@ -79,11 +72,12 @@ public class AuthController {
                 AuthResponse initialAuthResponse = objectMapper.readValue(response.body(), AuthResponse.class);
 
                 AuthResponse authResponse = modelMapper.map(initialAuthResponse, AuthResponse.class);
-
-
-                //getProfile(authResponse.getAccess_token());
-                getProfile(authResponse.getAccess_token());
-                System.out.println(authResponse.getAccess_token());
+                if (authResponse.getStatus() != null) {
+                    throw new RuntimeException("Error: " + authResponse.getMessage());
+                }
+                else {
+                    getProfile(authResponse.getAccess_token());
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -103,7 +97,7 @@ public class AuthController {
         ObjectMapper objectMapper = new ObjectMapper();
         ProfileResponse initialAuthResponse = objectMapper.readValue(response.getBody(), ProfileResponse.class);
         // Используем ModelMapper для дополнительного маппинга, если это нужно
-        profileResponse = modelMapper.map(initialAuthResponse, ProfileResponse.class);
+        ProfileResponse profileResponse = modelMapper.map(initialAuthResponse, ProfileResponse.class);
         Storage storage = Storage.getInstance();
         storage.setProfileDone(true);
         storage.setProfileResponse(profileResponse);

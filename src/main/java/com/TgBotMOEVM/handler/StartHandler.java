@@ -16,7 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class StartHandler implements Handler {
 
-    private static final String GREETING = "Добро пожаловать, %s. Ваша роль: %s";
+    private static final String GREETING = "Добро пожаловать, %s.";
 
 
     private final UserService service;
@@ -29,7 +29,7 @@ public class StartHandler implements Handler {
 
             User user = service.create(update);
             return List.of(createMessage(update.getMessage().getChatId().toString(),
-                    String.format(GREETING, user.getNickname(), user.getRole()), replyKeyboardMaker.getMainMenuKeyboard()));
+                    String.format(GREETING, user.getNickname()), replyKeyboardMaker.getMainMenuKeyboard()));
 
         }
 

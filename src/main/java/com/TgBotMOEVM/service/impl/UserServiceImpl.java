@@ -1,12 +1,11 @@
 package com.TgBotMOEVM.service.impl;
 
-import com.TgBotMOEVM.model.AuthorisedUser;
 import com.TgBotMOEVM.model.User;
+import com.TgBotMOEVM.model.UserInfo;
 import com.TgBotMOEVM.model.dictionary.UserRole;
 import com.TgBotMOEVM.repository.ProfileRepository;
 import com.TgBotMOEVM.repository.UserRepository;
 import com.TgBotMOEVM.service.UserService;
-import jakarta.persistence.Column;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,8 +13,8 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.time.LocalDate;
-import java.util.*;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.regex.Pattern;
 
 
@@ -27,7 +26,7 @@ public class UserServiceImpl implements UserService {
     private static final Pattern EMAIL_PATTERN = Pattern.compile(
             "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$"
     );
-    private final UserRepository repository;
+    private final UserRepository userRepository;
 
     private final ProfileRepository profileRepository;
     @Transactional
@@ -35,17 +34,17 @@ public class UserServiceImpl implements UserService {
     public User create(Update update) {
         String telegramId = update.getMessage().getFrom().getId().toString();
 
-        User user = repository.findByTelegramId(telegramId);
-
-        if (user == null) {
+        Optional<User> user_optional = userRepository.findByTelegramId(telegramId);
+        User user;
+        if (user_optional.isEmpty()) {
             user = new User();
             user.setNickname(update.getMessage().getFrom().getFirstName());
             user.setLastName(update.getMessage().getFrom().getLastName());
             user.setTelegramId(telegramId);
             user.setRole(UserRole.STUDENT);
-
-            repository.save(user);
+            userRepository.save(user);
         }
+        else user = user_optional.get();
         return user;
     }
 
@@ -54,32 +53,25 @@ public class UserServiceImpl implements UserService {
     public String authUser(Update update, String email) {
         String telegramId = update.getMessage().getFrom().getId().toString();
 
-        User user = repository.findByTelegramId(telegramId);
-        if (user == null) {
+        Optional<User> user_optional = userRepository.findByTelegramId(telegramId);
+        User user;
+        if (user_optional.isEmpty()) {
             user = this.create(update);
         }
-        Optional<AuthorisedUser> profile = profileRepository.findByEmail(email);
+        else user = user_optional.get();
+        Optional<UserInfo> profile = profileRepository.findByEmail(email);
             String validation = validate(email, user, profile);
             if (validation.equals("ОК")){
-                AuthorisedUser authorisedUser = profile.get();
-                user.setEmail(email);
+                UserInfo userInfo = profile.get();
+                user.setUserinfo(userInfo);
+                userRepository.save(user);
 
-                user.setSecond_name(authorisedUser.getSecondName());
-
-                user.setFirst_name(authorisedUser.getFirstName());
-
-                user.setMiddle_name(authorisedUser.getMiddleName());
-
-                user.setBirthdate(authorisedUser.getBirthdate());
-
-                repository.save(user);
-
-                return "Привет, " + user.getFirst_name() + ' ' + user.getSecond_name() + '!';
+                return "Привет, " + userInfo.getFirstName() + ' ' + userInfo.getSecondName() + '!';
         }
         return validation;
     }
 
-    private String validate (String email, User user, Optional<AuthorisedUser> profile){
+    private String validate (String email, User user, Optional<UserInfo> profile){
         Instant time;
         if (!EMAIL_PATTERN.matcher(email).matches()){
             return "Сообщение не соответствует формату электронной почты.";
@@ -90,8 +82,8 @@ public class UserServiceImpl implements UserService {
         else {
                 time = profile.get().getAuthTime();
         }
-        if (repository.findByEmail(email) != null){
-            if (!Objects.equals(repository.findByEmail(email).getTelegramId(), user.getTelegramId())) {
+        if (userRepository.findByEmail(email).isPresent()){
+            if (!Objects.equals(userRepository.findByEmail(email).get().getTelegramId(), user.getTelegramId())) {
                 return "Электронная почта уже привязана к другому аккаунту. Если это сделано по ошибке, " +
                         "обратитесь в тех.поддержку по адресу support_bot@etu.ru";
             }
@@ -108,38 +100,5 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-
-    @Override
-    public List<User> getAllStudents() {
-        return new ArrayList<>();//repository.findAllByRole(UserRole.STUDENT);
-    }
-
-    @Override
-    public List<User> getAllTeachers() {
-        return new ArrayList<>();//return repository.findAllByRole(UserRole.TEACHER);
-    }
-
-    @Override
-    public Optional<User> getUser(UUID id) {
-        return repository.findById(id);
-    }
-
-    @Override
-    public boolean changeUserRole(Update update, UserRole role) {
-        boolean roleHasBeenChanged = false;
-
-        String telegramId = update.getMessage().getFrom().getId().toString();
-
-        User user = repository.findByTelegramId(telegramId);
-
-        if (user.getRole() != role) {
-            user.setRole(role);
-            repository.save(user);
-
-            roleHasBeenChanged = true;
-        }
-
-        return roleHasBeenChanged;
-    }
 
 }

@@ -1,13 +1,10 @@
 package com.TgBotMOEVM.handler;
 
-import com.TgBotMOEVM.component.ReplyKeyboardMaker;
 import com.TgBotMOEVM.constant.ButtonCommand;
-import com.TgBotMOEVM.model.User;
 import com.TgBotMOEVM.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.commands.BotCommand;
