@@ -1,4 +1,4 @@
-package com.TgBotMOEVM.service.impl;
+package com.TgBotMOEVM.service;
 
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.bots.DefaultAbsSender;

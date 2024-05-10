@@ -2,13 +2,12 @@ package com.TgBotMOEVM.security;
 
 import com.TgBotMOEVM.config.Storage;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.keygen.Base64StringKeyGenerator;
 import org.springframework.security.crypto.keygen.StringKeyGenerator;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.web.DefaultOAuth2AuthorizationRequestResolver;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestResolver;
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
-import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -44,13 +43,11 @@ public class CustomAuthorizationRequestResolver implements OAuth2AuthorizationRe
             return null;
         }
 
-        // Generate PKCE code verifier and challenge
         String codeVerifier = secureKeyGenerator.generateKey();
         String codeChallenge;
         try {
             codeChallenge = createHash(codeVerifier);
         } catch (NoSuchAlgorithmException e) {
-            // If SHA-256 is not available, fall back to using the verifier as the challenge
             codeChallenge = codeVerifier;
         }
         Storage storage = Storage.getInstance();

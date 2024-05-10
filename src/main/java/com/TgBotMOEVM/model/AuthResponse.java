@@ -5,6 +5,42 @@ public class AuthResponse {
     private int expires_in;
     private String access_token;
     private String refresh_token;
+    private String status;
+    private String uuid;
+    private String message;
+    private String details;
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public String getDetails() {
+        return details;
+    }
+
+    public void setDetails(String details) {
+        this.details = details;
+    }
 
     public String getRefresh_token() {
         return refresh_token;

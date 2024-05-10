@@ -1,7 +1,6 @@
 package com.TgBotMOEVM.handler;
 
 import com.TgBotMOEVM.component.InlineKeyboardMaker;
-import com.TgBotMOEVM.component.ReplyKeyboardMaker;
 import com.TgBotMOEVM.constant.InlineButtonCommand;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -16,30 +15,23 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 public class HelloHandler implements Handler {
-
-    private static final String START_TEXT = """
-            Для авторизации введите страховой номер индивидуального лицевого счёта (СНИЛС):
-            """;
     private final InlineKeyboardMaker inlineKeyboardMaker;
-    private final ReplyKeyboardMaker replyKeyboardMaker;
 
     @Override
     public List<BotApiMethod<?>> handle(Update update) {
-        //User user = service.getUserOrCreateNewOne(update);
-
-        /*return List.of(SendMessage.builder()
-                .chatId(update.getMessage().getChatId().toString())
-                .text(START_TEXT)//String.format(GREETING, user.getName(), user.getRole()))
-                .replyMarkup(inlineKeyboardMaker.getSNILS())
-                .build()); */
         return List.of(SendMessage.builder()
                 .chatId(update.getMessage().getChatId().toString())
-                .text("Авторизация")
+                .text("""
+              Чтобы авторизоваться пройдите по ссылке.
+              
+              После согласия на использование персональных данных,
+              для подтверждения отправьте адрес электронной почты,
+              привязанной к личному кабинету, используя префикс 'Email'.
+              Пример: 'Email examplestudent2024@stud.etu.ru'
+              """)
                 .replyMarkup(inlineKeyboardMaker.getUser())
                 .build());
     }
-
-
 
 
     @Override

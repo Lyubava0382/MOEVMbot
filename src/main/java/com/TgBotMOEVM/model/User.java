@@ -9,8 +9,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Date;
-
 @Getter
 @Setter
 @AllArgsConstructor
@@ -19,23 +17,12 @@ import java.util.Date;
 @Entity
 public class User extends BaseEntity {
 
-    @Column(name = "telegram_id")//, nullable = false, unique = true)
+    @Column(name = "telegram_id", nullable = false, unique = true)
     private String telegramId;
 
-    @Column(name = "email")//, unique = true)
-    private String email;
-
-    @Column(name = "first_name")//, nullable = false)
-    private String first_name;
-
-    @Column(name = "second_name")//, nullable = false)
-    private String second_name;
-
-    @Column(name = "middle_name")//, nullable = false)
-    private String middle_name;
-
-    @Column(name = "birthdate")//, nullable = false)
-    private Date birthdate;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "userinfo_id", referencedColumnName = "id", unique = true)
+    private UserInfo userinfo;
 
     @Column(name = "notification")//, nullable = false)
     private boolean notification;
@@ -44,12 +31,10 @@ public class User extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private UserRole role = UserRole.GUEST;
 
-    @Column(name = "name")//, nullable = false)
-    private String name;
+    @Column(name = "nickname")//, nullable = false)
+    private String nickname;
 
     @Column(name = "lastname")//, nullable = false)
     private String lastName;
 
-    @Column(name = "snils")
-    private String SNILS;
 }

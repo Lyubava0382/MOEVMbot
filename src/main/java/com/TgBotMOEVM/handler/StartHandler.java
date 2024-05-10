@@ -5,9 +5,6 @@ import com.TgBotMOEVM.constant.ButtonCommand;
 import com.TgBotMOEVM.model.User;
 import com.TgBotMOEVM.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -19,7 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class StartHandler implements Handler {
 
-    private static final String GREETING = "Добро пожаловать, %s. Ваша роль: %s";
+    private static final String GREETING = "Добро пожаловать, %s.";
 
 
     private final UserService service;
@@ -32,7 +29,7 @@ public class StartHandler implements Handler {
 
             User user = service.create(update);
             return List.of(createMessage(update.getMessage().getChatId().toString(),
-                    String.format(GREETING, user.getName(), user.getRole()), replyKeyboardMaker.getMainMenuKeyboard()));
+                    String.format(GREETING, user.getNickname()), replyKeyboardMaker.getMainMenuKeyboard()));
 
         }
 
