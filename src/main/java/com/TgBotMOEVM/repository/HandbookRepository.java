@@ -10,6 +10,6 @@ import java.util.UUID;
 
 @Repository
 public interface HandbookRepository extends JpaRepository<Handbook, UUID> {
-    Optional<UserInfo> findByCategory(String category);
+    Optional<Handbook> findByCategory(String category);
 
 }

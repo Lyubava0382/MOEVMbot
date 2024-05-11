@@ -23,7 +23,7 @@ public class Handbook extends BaseEntity {
     @Column(name = "menu")
     private String menu;
 
-    @Column(name = "message", unique = true)
+    @Column(name = "message", unique = true, length = 4095)
     private String message;
 
 }

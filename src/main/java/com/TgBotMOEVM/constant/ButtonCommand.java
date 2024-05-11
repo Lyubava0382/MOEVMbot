@@ -18,6 +18,7 @@ public interface ButtonCommand {
     BotCommand MOEVM = new BotCommand("/moevm", "Кафедра МОЕВМ");
     BotCommand DEPARTMENTS = new BotCommand("/departments", "Другие кафедры");
     BotCommand UNION = new BotCommand("/union", "Профком");
+
     BotCommand LOCATIONS = new BotCommand("/locations", "Важные локации");
     BotCommand HEALTH = new BotCommand("/health", "Здоровье");
     BotCommand MILITARY = new BotCommand("/military", "Военный стол");
@@ -38,7 +39,7 @@ public interface ButtonCommand {
     BotCommand COMMISSION = new BotCommand("/commission", "Комиссия");
 
     BotCommand OFFICE = new BotCommand("/office", "Студенческая канцелярия");
-    BotCommand SOCIAL_DEPARTMENT = new BotCommand("/social_department", "Соц. отдел");
+    BotCommand SOCIAL_DEPARTMENT = new BotCommand("/social_department", "Приёмная комиссия");
     BotCommand PAID = new BotCommand("/paid", "Платное обучение");
     BotCommand DORMITORY = new BotCommand("/dormitory", "Общежитие");
     BotCommand FOREIGN_CITIZENS = new BotCommand("/foreign_citizens", "Иностранным гражданам");
