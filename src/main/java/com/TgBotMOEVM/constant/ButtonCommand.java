@@ -15,7 +15,7 @@ public interface ButtonCommand {
 
     BotCommand RECTOR = new BotCommand("/rector", "Ректор");
     BotCommand DEANERY = new BotCommand("/deanery", "Деканат");
-    BotCommand MOEVM = new BotCommand("/moevm", "Кафедра МОЕВМ");
+    BotCommand MOEVM = new BotCommand("/moevm", "Кафедра МО ЭВМ");
     BotCommand DEPARTMENTS = new BotCommand("/departments", "Другие кафедры");
     BotCommand UNION = new BotCommand("/union", "Профком");
 

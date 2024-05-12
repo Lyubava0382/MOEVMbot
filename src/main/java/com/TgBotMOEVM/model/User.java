@@ -1,8 +1,6 @@
 package com.TgBotMOEVM.model;
 
 
-
-import com.TgBotMOEVM.model.dictionary.UserRole;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,12 +22,6 @@ public class User extends BaseEntity {
     @JoinColumn(name = "userinfo_id", referencedColumnName = "id", unique = true)
     private UserInfo userinfo;
 
-    @Column(name = "notification")//, nullable = false)
-    private boolean notification;
-
-    @Column(name = "role")//, nullable = false)
-    @Enumerated(EnumType.STRING)
-    private UserRole role = UserRole.GUEST;
 
     @Column(name = "nickname")//, nullable = false)
     private String nickname;

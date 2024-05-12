@@ -16,7 +16,17 @@ import java.util.List;
 @RequiredArgsConstructor
 public class StartHandler implements Handler {
 
-    private static final String GREETING = "Добро пожаловать, %s.";
+    private static final String GREETING = """
+            Добро пожаловать, %s.
+            Я - Бот МОЭВМ "ЛЭТИ", твой виртуальный ассистент :-)
+            Моя миссия - помочь тебе быстро найти нужную информацию.
+            
+            Чтобы больше узнать о нашем университете - нажимай на интересующий тебя раздел!
+            
+            Не забудь, что с помощью ETU ID ты можешь привязать меня к аккаунту своего личного кабинета, 
+            если ты уже студент
+            """;
+
 
 
     private final UserService service;

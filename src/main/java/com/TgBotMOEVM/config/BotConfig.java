@@ -21,7 +21,6 @@ public class BotConfig {
     @Bean
     public DefaultBotOptions defaultBotOptions() {
         DefaultBotOptions botOptions = new DefaultBotOptions();
-        // Здесь можно настроить параметры botOptions, если это необходимо
         return botOptions;
     }
 }

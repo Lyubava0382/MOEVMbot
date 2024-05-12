@@ -8,8 +8,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
-import java.time.LocalDateTime;
-import java.time.Month;
 
 @SpringBootApplication
 public class TgBotMOEVM {
@@ -227,7 +225,7 @@ public class TgBotMOEVM {
 							- Крупенко Наталья Борисовна. Старший диспетчер факультета. Она занимается оповещением старост о чём-либо посредством обзвона.
 							           
 							""");
-			Handbook university3 = new Handbook("Кафедра МОЕВМ", "О структуре университета",
+			Handbook university3 = new Handbook("Кафедра МО ЭВМ", "О структуре университета",
 					"""
 							Кафедра математического обеспечения и применения ЭВМ (МоЭВМ)
 							Главный кабинет: 3412

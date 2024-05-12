@@ -1,7 +1,6 @@
 package com.TgBotMOEVM.repository;
 
 import com.TgBotMOEVM.model.Handbook;
-import com.TgBotMOEVM.model.UserInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

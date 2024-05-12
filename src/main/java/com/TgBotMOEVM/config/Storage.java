@@ -9,7 +9,6 @@ public class Storage {
 
     private String codeVerifier;
 
-    // Конструктор должен быть приватным, чтобы предотвратить прямое создание экземпляра
     private Storage() {
     }
 
@@ -40,7 +39,6 @@ public class Storage {
     public void setCodeVerifier(String codeVerifier) {
         this.codeVerifier = codeVerifier;
     }
-    private boolean profileDone;
 
     private ProfileResponse profileResponse;
 
@@ -53,12 +51,5 @@ public class Storage {
     }
 
 
-    public boolean isProfileDone() {
-        return profileDone;
-    }
-
-    public void setProfileDone(boolean profileDone) {
-        this.profileDone = profileDone;
-    }
 }
 

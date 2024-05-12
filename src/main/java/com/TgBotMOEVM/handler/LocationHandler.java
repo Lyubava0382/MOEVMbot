@@ -2,8 +2,6 @@ package com.TgBotMOEVM.handler;
 
 import com.TgBotMOEVM.component.ReplyKeyboardMaker;
 import com.TgBotMOEVM.constant.ButtonCommand;
-import com.TgBotMOEVM.model.User;
-import com.TgBotMOEVM.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
@@ -17,8 +15,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class LocationHandler implements Handler{
     private static final String GREETING = "Места силы";
-
-    private final UserService service;
 
     private final ReplyKeyboardMaker replyKeyboardMaker;
 

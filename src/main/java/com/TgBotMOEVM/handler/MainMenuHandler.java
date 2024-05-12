@@ -2,8 +2,6 @@ package com.TgBotMOEVM.handler;
 
 import com.TgBotMOEVM.component.ReplyKeyboardMaker;
 import com.TgBotMOEVM.constant.ButtonCommand;
-import com.TgBotMOEVM.model.User;
-import com.TgBotMOEVM.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
@@ -16,8 +14,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MainMenuHandler implements Handler{
     private static final String GREETING = "В главное меню";
-
-    private final UserService service;
 
     private final ReplyKeyboardMaker replyKeyboardMaker;
 

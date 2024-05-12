@@ -92,11 +92,6 @@ public class TelegramBot extends TelegramLongPollingBot {
     }
 
 
-    /**
-     * Sends all the messages from the list
-     *
-     * @param methods - list of bot api methods to execute
-     */
     public void executeBotApiMethods(List<? extends BotApiMethod<?>> methods) {
         for (BotApiMethod<?> method : methods) {
             try {

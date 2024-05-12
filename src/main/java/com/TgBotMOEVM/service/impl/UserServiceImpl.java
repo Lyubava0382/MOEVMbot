@@ -2,7 +2,6 @@ package com.TgBotMOEVM.service.impl;
 
 import com.TgBotMOEVM.model.User;
 import com.TgBotMOEVM.model.UserInfo;
-import com.TgBotMOEVM.model.dictionary.UserRole;
 import com.TgBotMOEVM.repository.ProfileRepository;
 import com.TgBotMOEVM.repository.UserRepository;
 import com.TgBotMOEVM.service.UserService;
@@ -41,7 +40,6 @@ public class UserServiceImpl implements UserService {
             user.setNickname(update.getMessage().getFrom().getFirstName());
             user.setLastName(update.getMessage().getFrom().getLastName());
             user.setTelegramId(telegramId);
-            user.setRole(UserRole.STUDENT);
             userRepository.save(user);
         }
         else user = user_optional.get();

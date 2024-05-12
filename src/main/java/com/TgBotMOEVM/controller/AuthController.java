@@ -99,7 +99,6 @@ public class AuthController {
         // Используем ModelMapper для дополнительного маппинга, если это нужно
         ProfileResponse profileResponse = modelMapper.map(initialAuthResponse, ProfileResponse.class);
         Storage storage = Storage.getInstance();
-        storage.setProfileDone(true);
         storage.setProfileResponse(profileResponse);
 
         profileService.create(profileResponse.getData());

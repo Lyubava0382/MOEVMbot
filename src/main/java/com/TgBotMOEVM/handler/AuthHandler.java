@@ -14,7 +14,7 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class HelloHandler implements Handler {
+public class AuthHandler implements Handler {
     private final InlineKeyboardMaker inlineKeyboardMaker;
 
     @Override
