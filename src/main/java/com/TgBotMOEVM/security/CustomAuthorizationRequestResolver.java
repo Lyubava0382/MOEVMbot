@@ -54,7 +54,7 @@ public class CustomAuthorizationRequestResolver implements OAuth2AuthorizationRe
         storage.setState(req.getState());
         storage.setCodeVerifier(codeVerifier);
         return OAuth2AuthorizationRequest.from(req)
-                .clientId("9bc6c414-2f20-4167-8fbb-513a3fb81acb")
+                .clientId("SECRET")
                 .redirectUri("http://localhost:8080/ltgbot/login/oauth2/code/etu")
                 .scope("profile")
                 .state(req.getState())

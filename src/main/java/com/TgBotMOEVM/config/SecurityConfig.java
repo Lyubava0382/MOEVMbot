@@ -54,8 +54,8 @@ public class SecurityConfig {
 
     private ClientRegistration clientRegistration() {
         return ClientRegistration.withRegistrationId("etu")
-                .clientId("9bc6c414-2f20-4167-8fbb-513a3fb81acb")
-                .clientSecret("hGXWuTL1yNZT1SaJs5QTZRENj9PP25xpDcb0bp90")
+                .clientId("SECRET")
+                .clientSecret("SECRET")
                 .scope("profile")
                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
                 .redirectUri("http://localhost:8080/ltgbot/login/oauth2/code/etu")
