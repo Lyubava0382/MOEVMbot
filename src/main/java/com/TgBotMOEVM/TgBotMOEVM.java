@@ -2,6 +2,7 @@ package com.TgBotMOEVM;
 
 import com.TgBotMOEVM.model.Handbook;
 import com.TgBotMOEVM.repository.HandbookRepository;
+import com.TgBotMOEVM.service.HandbookService;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -17,7 +18,7 @@ public class TgBotMOEVM {
 	}
 
 	@Bean
-	CommandLineRunner run(HandbookRepository handbookRepository){
+	CommandLineRunner run(HandbookService handbookService){
 
 		return args -> {
 
@@ -348,34 +349,34 @@ public class TgBotMOEVM {
 							https://t.me/LETIToday
 							 
 							""");
-			handbookRepository.save(health1);
-			handbookRepository.save(health2);
-			handbookRepository.save(health3);
+			handbookService.save(health1);
+			handbookService.save(health2);
+			handbookService.save(health3);
 
-			handbookRepository.save(education1);
-			handbookRepository.save(education2);
-			handbookRepository.save(education3);
-			handbookRepository.save(education4);
-			handbookRepository.save(education5);
-			handbookRepository.save(education6);
-			handbookRepository.save(education7);
+			handbookService.save(education1);
+			handbookService.save(education2);
+			handbookService.save(education3);
+			handbookService.save(education4);
+			handbookService.save(education5);
+			handbookService.save(education6);
+			handbookService.save(education7);
 
-			handbookRepository.save(places1);
-			handbookRepository.save(places2);
-			handbookRepository.save(places3);
-			handbookRepository.save(places4);
-			handbookRepository.save(places5);
-			handbookRepository.save(places6);
+			handbookService.save(places1);
+			handbookService.save(places2);
+			handbookService.save(places3);
+			handbookService.save(places4);
+			handbookService.save(places5);
+			handbookService.save(places6);
 
-			handbookRepository.save(university1);
-			handbookRepository.save(university2);
-			handbookRepository.save(university3);
-			handbookRepository.save(university4);
-			handbookRepository.save(university5);
+			handbookService.save(university1);
+			handbookService.save(university2);
+			handbookService.save(university3);
+			handbookService.save(university4);
+			handbookService.save(university5);
 
-			handbookRepository.save(military);
-			handbookRepository.save(activities);
-			handbookRepository.save(links);
+			handbookService.save(military);
+			handbookService.save(activities);
+			handbookService.save(links);
 
 		};
 	}

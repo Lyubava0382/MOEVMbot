@@ -3,6 +3,7 @@ package com.TgBotMOEVM.service.impl;
 import com.TgBotMOEVM.model.ProfileResponse;
 import com.TgBotMOEVM.model.UserInfo;
 import com.TgBotMOEVM.repository.ProfileRepository;
+import com.TgBotMOEVM.service.ProfileService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,11 +15,12 @@ import java.time.ZoneId;
 @Service
 @RequiredArgsConstructor
 @org.springframework.transaction.annotation.Transactional(readOnly = true)
-public class ProfileServiceImpl {
+public class ProfileServiceImpl implements ProfileService {
 
     private final ProfileRepository profileRepository;
 
     @Transactional
+    @Override
     public UserInfo create(ProfileResponse.Data data) {
         UserInfo profile = new UserInfo();
         try{
