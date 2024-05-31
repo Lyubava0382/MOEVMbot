@@ -9,7 +9,7 @@ services:
     environment:
       POSTGRES_DB: TgBotDB
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 4d3711750d5a9
+      POSTGRES_PASSWORD: SECRET
   app:
     container_name: TelegramBotMOEVM
     build: .
@@ -20,4 +20,4 @@ services:
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://pg:5432/TgBotDB
       SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_DATASOURCE_PASSWORD: 4d3711750d5a9
+      SPRING_DATASOURCE_PASSWORD: SECRET
