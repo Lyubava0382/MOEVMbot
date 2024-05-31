@@ -20,6 +20,7 @@ public class ReplyKeyboardMaker {
         keyboard.add(new KeyboardRow(Collections.singletonList(new KeyboardButton(InlineButtonCommand.AUTH.getDescription()))));
         keyboard.add(new KeyboardRow(Collections.singletonList(new KeyboardButton(ButtonCommand.UNIVERSITY.getDescription()))));
         keyboard.add(new KeyboardRow(Collections.singletonList(new KeyboardButton(ButtonCommand.LINKS.getDescription()))));
+        keyboard.add(new KeyboardRow(Collections.singletonList(new KeyboardButton(ButtonCommand.EXAM_TIME.getDescription()))));
         keyboard.add(new KeyboardRow(Collections.singletonList(new KeyboardButton(ButtonCommand.NEXT.getDescription()))));
         keyboard.add(row);
 

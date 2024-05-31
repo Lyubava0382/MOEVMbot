@@ -60,6 +60,9 @@ public class TelegramBot extends TelegramLongPollingBot {
             if (update.getMessage().getText().startsWith("Email")){
                 command = ButtonCommand.EMAIL.getCommand();
             }
+            if (update.getMessage().getText().startsWith("Экзамены")){
+                command = ButtonCommand.EXAM_SCHEDULE.getCommand();
+            }
 
             Handler handler = resolver.getHandler(command);
 

@@ -45,6 +45,8 @@ public interface ButtonCommand {
     BotCommand FOREIGN_CITIZENS = new BotCommand("/foreign_citizens", "Иностранным гражданам");
     BotCommand LIBRARY = new BotCommand("/library", "Библиотека");
 
+    BotCommand EXAM_TIME = new BotCommand("/examTime", "Расписание экзаменов");
 
+    BotCommand EXAM_SCHEDULE = new BotCommand("/exam_schedule", "Электронная почта");
 
 }
