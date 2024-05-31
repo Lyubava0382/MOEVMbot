@@ -24,7 +24,7 @@ public class ExamScheduleHandler implements Handler {
 
     private final UserRepository userRepository;
 
-    private static final Pattern EXAM_PATTERN = Pattern.compile("^\\\\s*[1-9]\\\\d{3}\\\\s*$");
+    private static final Pattern EXAM_PATTERN = Pattern.compile("^\\s*[1-9]\\d{3}\\s*$");
 
     private final ExamService examService;
 
